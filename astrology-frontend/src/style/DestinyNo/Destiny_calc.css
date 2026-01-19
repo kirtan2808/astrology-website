@@ -1,0 +1,105 @@
+/* ================= MAIN CONTAINER ================= */
+.Destiny-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  min-height: 100vh;
+  padding: 60px 40px;
+
+  background: linear-gradient(360deg,
+      #1b1028 0%,
+      #0b1f3a 40%,
+      #020b1f 100%);
+}
+
+/* ================= CALCULATOR ================= */
+.calc {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+/* ================= CONCLUSION ================= */
+/* ================= AI CONTENT – DARK NAVY THEME ================= */
+.destiny-explain-ai {
+  flex: 1;
+  max-width: 900px;
+  min-height: 420px;
+  padding: 40px;
+  color: goldenrod;
+  line-height: 2;
+  background: rgba(24, 38, 71, 0.75);
+  backdrop-filter: blur(12px);
+  border: 2px solid goldenrod;
+  border-radius: 20px;
+}
+
+/* Section Headings */
+.destiny-explain-ai h3 {
+  margin-top: 32px;
+  margin-bottom: 12px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #E6C77B;
+  /* soft gold accent */
+  /* border-left: 4px solid #E6C77B;  <-- removed pipe line */
+  padding-left: 0;
+  /* removed left padding for alignment */
+  letter-spacing: 0.5px;
+}
+
+/* Paragraph text */
+.destiny-explain-ai p {
+  margin-bottom: 10px;
+  color: #D1D5DB;
+}
+
+/* Bullet list */
+.destiny-explain-ai ul {
+  padding-left: 22px;
+  margin-top: 8px;
+  margin-bottom: 12px;
+}
+
+.destiny-explain-ai li {
+  margin-bottom: 6px;
+  color: #CBD5F5;
+}
+
+/* Strong / highlight text */
+.destiny-explain-ai strong {
+  color: #F9FAFB;
+  font-weight: 600;
+}
+
+/* ================= MOBILE ================= */
+@media (max-width: 768px) {
+
+  .Destiny-container {
+    flex-direction: column;
+    padding: 70px 16px;
+    gap: 24px;
+    /* spacing between calculator & conclusion */
+  }
+
+  /* Calculator block */
+  .calc {
+    width: 100%;
+  }
+
+  /* 🔥 FIXED AI CONCLUSION */
+  .destiny-explain-ai {
+    width: 100%;
+    padding: 22px 18px;
+    /* tighter padding for mobile */
+    font-size: 14px;
+    /* better readability */
+    line-height: 1.8;
+    border-radius: 16px;
+  }
+
+  .destiny-explain-ai h3 {
+    font-size: 16px;
+    margin-top: 24px;
+  }
+}

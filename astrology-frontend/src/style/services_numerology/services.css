@@ -1,0 +1,133 @@
+/* ================= SERVICES PAGE ================= */
+
+.services-page {
+  background: linear-gradient(180deg, #050b1a, #081428);
+  color: #eaeaea;
+  font-family: "Poppins", sans-serif;
+}
+
+/* ---------- INTRO ---------- */
+.services-intro {
+  padding: 90px 12% 70px;
+  text-align: center;
+}
+
+.services-intro h1 {
+  font-family: "Playfair Display", serif;
+  font-size: 42px;
+  color: #e6c77b;
+  margin-bottom: 18px;
+}
+
+.services-intro p {
+  max-width: 720px;
+  margin: auto;
+  color: #d6d6d6;
+  font-size: 16px;
+}
+
+/* ---------- GRID ---------- */
+.services-grid {
+  padding: 70px 12% 100px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 35px;
+
+  /* 🔑 IMPORTANT */
+  align-items: stretch;
+}
+
+/* ---------- LINK RESET ---------- */
+.service-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  height: 100%;
+}
+
+/* ---------- CARD ---------- */
+.service-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(230, 199, 123, 0.25);
+  border-radius: 20px;
+  padding: 35px 30px;
+  text-align: center;
+  cursor: pointer;
+
+  /* 🔑 FIX UNEVEN HEIGHT */
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+/* ---------- HOVER EFFECT (UNCHANGED LOOK) ---------- */
+.service-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 0 35px rgba(230, 199, 123, 0.35);
+}
+
+/* ---------- ICON ---------- */
+.service-icon {
+  font-family: "Playfair Display", serif;
+  font-size: 42px;
+  color: #e6c77b;
+  margin-bottom: 15px;
+  transition: transform 0.4s ease;
+}
+
+.service-card:hover .service-icon {
+  transform: scale(1.15);
+}
+
+/* ---------- TITLE ---------- */
+.service-card h3 {
+  font-family: "Playfair Display", serif;
+  color: #e6c77b;
+  margin-bottom: 12px;
+  font-size: 20px;
+}
+
+/* ---------- DESCRIPTION ---------- */
+.service-card p {
+  font-size: 14px;
+  color: #dcdcdc;
+  line-height: 1.6;
+
+  /* 🔑 BALANCE TEXT */
+  flex-grow: 1;
+}
+
+/* ---------- CTA ---------- */
+.services-cta {
+  padding: 90px 12%;
+  background: #081428;
+  text-align: center;
+}
+
+.services-cta h2 {
+  font-family: "Playfair Display", serif;
+  color: #e6c77b;
+  margin-bottom: 18px;
+  font-size: 32px;
+}
+
+.services-cta p {
+  color: #cccccc;
+  max-width: 600px;
+  margin: auto;
+  font-size: 15px;
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 600px) {
+  .services-intro h1 {
+    font-size: 34px;
+  }
+
+  .services-grid {
+    padding: 50px 8% 80px;
+  }
+}

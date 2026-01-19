@@ -1,0 +1,56 @@
+/* ================= DESCRIPTION SECTION ================= */
+.description.destiny {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 90px 10%;
+  gap: 60px;
+
+  background: linear-gradient(
+    180deg,
+    #020b1f 0%,
+    #0b1f3a 50%,
+    #1b1028 100%
+  );
+}
+
+.life-img img {
+  width: 360px;
+  height: 360px;
+  object-fit: cover;
+  border-radius: 22px;
+
+  box-shadow:
+    0 0 25px rgba(230, 199, 123, 0.25),
+    0 0 60px rgba(11, 26, 58, 0.8);
+}
+
+.question {
+  max-width: 520px;
+}
+
+.question h1 {
+  font-size: 2.6rem;
+  color: #f5d88a;
+  margin-bottom: 18px;
+}
+
+.question p {
+  color: #cbd5e1;
+  line-height: 1.9;
+  font-size: 1.05rem;
+}
+
+/* ================= MOBILE ================= */
+@media (max-width: 768px) {
+  .description.destiny {
+    flex-direction: column;
+    text-align: center;
+    padding: 70px 16px;
+  }
+
+  .life-img img {
+    width: 280px;
+    height: 280px;
+  }
+}

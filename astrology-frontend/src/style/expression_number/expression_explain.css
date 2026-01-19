@@ -1,0 +1,52 @@
+/* ================= DESTINY EXPLANATION ================= */
+
+.lp-explain.destiny {
+  background: radial-gradient(
+    circle at top,
+    #071a3d,
+    #020b1f
+  );
+
+  padding: 90px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 35px;
+}
+
+.lp-explain.destiny .lp-box {
+  width: 100%;
+  max-width: 720px;
+  padding: 26px;
+  border-radius: 18px;
+
+  background: rgba(255,255,255,0.04);
+  border-left: 4px solid #e6c77b;
+}
+
+.lp-explain.destiny h3 {
+  color: #e6c77b;
+  margin-bottom: 10px;
+  font-size: 1.05rem;
+}
+
+.lp-explain.destiny p {
+  color: #cbd5e1;
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+/* -------- MOBILE (ONLY EXPLANATION) -------- */
+@media (max-width: 768px) {
+  .lp-explain.destiny {
+    padding: 70px 16px;
+  }
+
+  .lp-explain.destiny .lp-box {
+    padding: 20px;
+  }
+
+  .lp-explain.destiny p {
+    font-size: 0.9rem;
+  }
+}

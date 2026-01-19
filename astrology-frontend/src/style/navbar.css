@@ -1,0 +1,149 @@
+/* ================= BASE NAVBAR ================= */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  /* padding: 20px; */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  transition: transform 0.35s ease, opacity 0.35s ease;
+}
+
+.navbar.show {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.navbar.hide {
+  transform: translateY(-100%);
+  opacity: 0;
+}
+
+/* scroll background */
+.navbar.navbar-bg {
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+}
+
+/* ================= LOGO ================= */
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo img {
+  height: 90px;
+  width: 190px;
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.35));
+}
+
+/* desktop / mobile logo control */
+.desktop-logo {
+  display: flex;
+}
+
+.mobile-logo {
+  display: none;
+}
+
+/* ================= LINKS (DESKTOP) ================= */
+.links {
+  display: flex;
+  align-items: center;
+}
+
+.links a {
+  margin-left: 44px;
+  margin-right: 20px;
+  text-decoration: none;
+  font-size: 20px;
+  color: #F6E7B2;
+}
+
+.links a:hover {
+  color: #886328;
+}
+
+/* ================= HAMBURGER ================= */
+.menu-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.menu-toggle span {
+  width: 26px;
+  height: 3px;
+  background: #F6E7B2;
+  border-radius: 2px;
+}
+
+/* ================= MOBILE ================= */
+@media (max-width: 768px) {
+
+  /* navbar bar */
+  .navbar {
+    background: #020b1f;
+    height: 56px;
+    padding: 10px 14px;
+  }
+
+  /* show hamburger */
+  .menu-toggle {
+    display: flex;
+  }
+
+  /* hide desktop logo */
+  .desktop-logo {
+    display: none;
+  }
+
+  /* mobile menu panel */
+  .links {
+    position: fixed;
+    top: 56px;
+    left: 0;
+
+    width: 65%;
+    height: calc(100vh - 56px);
+
+    background: #020b1f;
+    border-right: 1px solid rgba(230,199,123,0.25);
+
+    flex-direction: column;
+    align-items: flex-start;
+
+    padding: 24px;
+    gap: 20px;
+
+    transform: translateX(-100%);
+    transition: transform 0.35s ease;
+  }
+
+  .links.active {
+    transform: translateX(0);
+  }
+
+  /* mobile logo inside menu */
+  .mobile-logo {
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  .mobile-logo img {
+    height: 90px;
+    /* width: 160px; */
+    width: auto;
+  }
+
+  .links a {
+    font-size: 18px;
+    margin: 0;
+  }
+}

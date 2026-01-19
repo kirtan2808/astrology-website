@@ -1,0 +1,156 @@
+/* ================= CONTACT PAGE ================= */
+
+.contact-page {
+  background: #050b1a;
+  color: #eaeaea;
+  font-family: "Poppins", sans-serif;
+}
+
+/* ---------- INTRO ---------- */
+.contact-intro {
+  padding: 90px 12% 70px;
+  text-align: center;
+  background: linear-gradient(180deg, #060d1f, #050b1a);
+}
+
+.contact-intro h1 {
+  font-family: "Playfair Display", serif;
+  font-size: 42px;
+  color: #e6c77b;
+  margin-bottom: 16px;
+}
+
+.contact-intro p {
+  max-width: 700px;
+  margin: auto;
+  color: #d6d6d6;
+  font-size: 16px;
+}
+
+/* ---------- WRAPPER ---------- */
+.contact-wrapper {
+  padding: 80px 12%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 70px;
+}
+
+/* ---------- INFO ---------- */
+.contact-info h2 {
+  font-family: "Playfair Display", serif;
+  color: #e6c77b;
+  margin-bottom: 16px;
+}
+
+.contact-info p {
+  color: #dddddd;
+  margin-bottom: 16px;
+}
+
+.contact-details p {
+  margin-bottom: 10px;
+  color: #cccccc;
+}
+
+.contact-note {
+  margin-top: 25px;
+  font-size: 14px;
+  color: #e6c77b;
+}
+
+/* ---------- FORM ---------- */
+.contact-form {
+  background: #081428;
+  padding: 45px;
+  border-radius: 20px;
+  box-shadow: 0 0 50px rgba(174, 151, 91, 0.607);
+}
+
+.contact-form h2 {
+  font-family: "Playfair Display", serif;
+  color: #e6c77b;
+  margin-bottom: 25px;
+}
+
+.form-group {
+  margin-bottom: 18px;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 14px 16px;
+  background: transparent;
+  border: 1px solid rgba(230, 199, 123, 0.3);
+  border-radius: 10px;
+  color: #ffffff;
+  font-family: "Poppins", sans-serif;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: #aaaaaa;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #e6c77b;
+}
+
+/* ---------- BUTTON ---------- */
+.contact-btn {
+  margin-top: 10px;
+  padding: 14px;
+  width: 100%;
+  border: none;
+  border-radius: 30px;
+  background: #e6c77b;
+  color: #081428;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.contact-btn:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 20px rgba(230, 199, 123, 0.6);
+}
+
+/* ---------- QUOTE ---------- */
+.contact-quote {
+  padding: 90px 12%;
+  text-align: center;
+  background: #081428;
+}
+
+.contact-quote p {
+  font-family: "Playfair Display", serif;
+  font-size: 26px;
+  color: #e6c77b;
+  max-width: 750px;
+  margin: auto;
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 900px) {
+  .contact-wrapper {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-form {
+    padding: 35px;
+  }
+
+  .contact-intro h1 {
+    font-size: 34px;
+  }
+}
+
+@media (max-width: 500px) {
+  .contact-intro,
+  .contact-wrapper,
+  .contact-quote {
+    padding: 60px 7%;
+  }
+}

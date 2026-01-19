@@ -1,0 +1,224 @@
+/* ================= MAIN CONTAINER ================= */
+.soulurge-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  min-height: 100vh;
+  padding: 60px 40px;
+  background: linear-gradient(360deg, #1b1028 0%, #0b1f3a 40%, #020b1f 100%);
+}
+
+/* ================= CALCULATOR ================= */
+.soulurge-calc {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.soulurge-calculator-box {
+  background: linear-gradient(145deg, #071a3d, #020b1f);
+  border-radius: 22px;
+  max-width: 460px;
+  width: 100%;
+  padding: 38px;
+  border: 1px solid rgba(230, 199, 123, 0.35);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 40px rgba(230, 199, 123, 0.15);
+}
+
+.soulurge-calculator-box h1 {
+  color: #f5d88a;
+  text-align: center;
+  margin-bottom: 22px;
+}
+
+/* INPUT */
+.soulurge-input-group {
+  width: 100%;
+}
+
+.soulurge-input {
+  width: 100%;
+  height: 48px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(245, 216, 138, 0.4);
+  color: #fff;
+}
+
+/* BUTTON */
+.soulurge-calc-btn {
+  margin-top: 24px;
+  width: 100%;
+  height: 48px;
+  border-radius: 14px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  background: linear-gradient(to right, #e6c77b, #f3d98b);
+}
+
+/* RESULT */
+.soulurge-result {
+  margin-top: 32px;
+  text-align: center;
+}
+
+.soulurge-number {
+  font-size: 4.6rem;
+  color: #f5d88a;
+  font-weight: 800;
+}
+
+.soulurge-meaning {
+  color: #cbd5e1;
+  margin-top: 10px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease;
+}
+
+.soulurge-meaning.show {
+  max-height: 120px;
+}
+
+/* ================= AI RESULT ================= */
+.soulurge-ai-output {
+  flex: 1;
+  max-width: 900px;
+  height: 420px;
+  /* fixed height */
+  padding: 40px;
+  line-height: 2;
+  background: rgba(24, 38, 71, 0.75);
+  backdrop-filter: blur(12px);
+  border: 2px solid goldenrod;
+  border-radius: 20px;
+  color: #e6c77b;
+
+  /* scrollable content */
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* AI content styles */
+.soulurge-ai-output h3 {
+  color: #e6c77b;
+  margin-top: 26px;
+}
+
+.soulurge-ai-output p,
+.soulurge-ai-output li {
+  color: #cbd5e1;
+}
+
+/* AI LOADER */
+.soulurge-ai-loader {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  text-align: center;
+  color: #e6c77b;
+}
+
+.soulurge-ring {
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  border: 3px solid rgba(230, 199, 123, 0.25);
+  border-top: 3px solid #e6c77b;
+  animation: soulurge-spin 1.2s linear infinite;
+  box-shadow: 0 0 12px rgba(230, 199, 123, 0.6), 0 0 30px rgba(230, 199, 123, 0.25);
+}
+
+.soulurge-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.soulurge-dots span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #e6c77b;
+  animation: soulurge-pulse 1.4s infinite ease-in-out both;
+}
+
+.soulurge-dots span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.soulurge-dots span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes soulurge-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes soulurge-pulse {
+
+  0%,
+  80%,
+  100% {
+    transform: scale(0);
+    opacity: 0.3;
+  }
+
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* ================= MOBILE ================= */
+@media(max-width:768px) {
+  .soulurge-container {
+    flex-direction: column;
+    padding: 70px 16px;
+    gap: 24px;
+  }
+
+  .soulurge-calc {
+    width: 100%;
+  }
+
+  .soulurge-calculator-box {
+    width: 100%;
+    padding: 22px 18px;
+    border-radius: 18px;
+  }
+
+  .soulurge-input {
+    width: 100%;
+    font-size: 14px;
+  }
+
+  .soulurge-calc-btn {
+    width: 100%;
+  }
+
+  .soulurge-ai-output {
+    width: 100%;
+    height: 320px;
+    /* smaller fixed height for mobile */
+    padding: 22px 18px;
+    font-size: 14px;
+    line-height: 1.8;
+    border-radius: 16px;
+  }
+
+  .soulurge-ai-output h3 {
+    font-size: 16px;
+  }
+
+  .soulurge-ai-loader p {
+    font-size: 14px;
+  }
+}

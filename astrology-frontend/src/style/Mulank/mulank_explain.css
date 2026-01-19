@@ -1,0 +1,42 @@
+/* ================= FORMULA / EXPLAIN ================= */
+.lp-explain.mulank {
+  background: radial-gradient(circle at top, #071a3d, #020b1f);
+  padding: 80px 20px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  align-items: center;
+}
+
+/* ================= BOX ================= */
+.lp-explain.mulank .lp-box {
+  max-width: 700px;
+  width: 100%;
+  padding: 22px;
+  border-radius: 16px;
+
+  background: rgba(255, 255, 255, 0.03);
+  border-left: 4px solid #e6c77b;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
+}
+
+/* ================= TEXT ================= */
+.lp-explain.mulank .lp-box h3 {
+  color: #e6c77b;
+  margin-bottom: 10px;
+  font-size: 1.4rem;
+}
+
+.lp-explain.mulank .lp-box p {
+  color: #cbd5e1;
+  line-height: 1.8;
+  font-size: 1rem;
+}
+
+/* ================= MOBILE ================= */
+@media (max-width: 768px) {
+  .lp-explain.mulank {
+    padding: 60px 16px;
+  }
+}
