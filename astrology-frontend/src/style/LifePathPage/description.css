@@ -1,0 +1,131 @@
+/* ================= DESCRIPTION SECTION ================= */
+.description {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    background-image: url("Lifepath_bg2.png");
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    gap: 50px;
+    padding: 80px;
+
+    /* 🔥 CHANGE: hero jaisa dark overlay readability ke liye */
+    position: relative;
+    color: #E6ECF5; /* hero paragraph color */
+}
+
+/* 🔥 CHANGE: dark overlay same as hero (text clear dikhne ke liye) */
+.description::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        rgba(2, 11, 31, 0.7),
+        rgba(2, 11, 31, 0.45)
+    );
+    z-index: 0;
+}
+
+/* 🔥 CHANGE: content ko overlay ke upar lane ke liye */
+.description > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* ================= QUESTION TEXT ================= */
+.question {
+    max-width: 520px;
+}
+
+/* 🔥 CHANGE: paragraph ko hero-content p jaisa banaya */
+.question p {
+    font-size: 18px;           /* was 20px but cramped */
+    line-height: 1.8;          /* 🔥 FIX: pehle line-height:1 (bahut tight) */
+    color: #E6ECF5;            /* hero paragraph color */
+    margin-bottom: 18px;
+}
+
+/* 🔥 OPTIONAL: agar question me heading ho */
+.question h2 {
+    font-size: 36px;
+    line-height: 1.3;
+    margin-bottom: 20px;
+    color: #FFF3C4;            /* hero h1 creamy gold */
+}
+
+/* ================= IMAGE ================= */
+.life-img img {
+    animation: glow 6s infinite ease-in-out;
+}
+
+/* ================= TABLET ================= */
+@media (max-width: 1024px) {
+  .description {
+    padding: 120px 60px;
+    gap: 40px;
+    height: auto;
+  }
+
+  /* 🔥 CHANGE: tablet pe text readable */
+  .question p {
+    font-size: 16px;
+    line-height: 1.75;
+  }
+
+  .question h2 {
+    font-size: 30px;
+  }
+
+  .life-img img {
+    height: 260px;
+    width: 260px;
+  }
+}
+
+/* ================= MOBILE ================= */
+@media (max-width: 768px) {
+  .description {
+    flex-direction: column;
+    text-align: center;
+    padding: 120px 20px 60px;
+    gap: 35px;
+  }
+
+  /* 🔥 CHANGE: hero mobile typography follow */
+  .question p {
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  .question h2 {
+    font-size: 26px;
+  }
+
+  .life-img img {
+    height: 220px;
+    width: 220px;
+  }
+}
+
+/* ================= SMALL MOBILE ================= */
+@media (max-width: 480px) {
+  .description {
+    padding: 100px 16px 50px;
+    gap: 30px;
+  }
+
+  .question p {
+    font-size: 14px;
+    line-height: 1.65;
+  }
+
+  .question h2 {
+    font-size: 24px;
+  }
+
+  .life-img img {
+    height: 200px;
+    width: 200px;
+  }
+}

@@ -1,0 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Playfair+Display:wght@500;600;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  color: #1e293b;
+}
+
+.hero-content h1,
+.shortcuts h2,
+.num-content h2,
+.footer-box h3,
+.section-heading,.section-heading1 {
+  font-family: 'Playfair Display', serif;
+}

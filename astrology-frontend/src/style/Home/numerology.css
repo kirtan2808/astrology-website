@@ -1,0 +1,178 @@
+/* ================= OUR SERVICES SECTION ================= */
+
+/* Section Heading (Our Services) */
+.section-heading {
+  padding: 80px 20px 40px 20px;
+  display: flex;
+  justify-content: center;
+  background: #0B1A3A;
+  /* Deep Navy Base */
+  color: #E6C77B;
+  /* Sacred Gold */
+  letter-spacing: 2px;
+  font-size: 36px;
+  text-transform: uppercase;
+  margin: 0;
+  font-weight: 700;
+}
+
+/* Main Section Container */
+.num-section {
+  display: flex;
+  align-items: center;
+  gap: 80px;
+  padding: 40px 12%;
+  background: #0B1A3A;
+  /* Uniform Background */
+  transition: background 0.4s ease;
+}
+
+/* Alternate Row Background (Slightly Darker to differentiate) */
+.num-section.reverse {
+  flex-direction: row-reverse;
+  background: #081428;
+  /* Slightly deeper blue */
+}
+
+/* Image Styling */
+.num-image img {
+  width: 200px;
+  height: 200px;
+  border-radius: 20px;
+  object-fit: cover;
+  border: 2px solid rgba(230, 199, 123, 0.2);
+  /* Soft Gold Border */
+  background: rgba(255, 255, 255, 0.02);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+  transition: all 0.4s ease;
+}
+
+/* Image Glow on Hover */
+.num-section:hover .num-image img {
+  transform: scale(1.05);
+  border-color: #E6C77B;
+  box-shadow: 0 0 25px rgba(230, 199, 123, 0.2);
+}
+
+/* Content Area */
+.num-content h2 {
+  color: #F3E3B2;
+  /* Rich Cream Gold */
+  margin-bottom: 18px;
+  font-size: 30px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.num-content p {
+  color: #B8C4E0;
+  /* Readable Star-light Grey */
+  line-height: 1.8;
+  font-size: 17px;
+  text-align: justify;
+  opacity: 0.9;
+}
+
+/* Bottom Buttons Wrapper */
+#buttons1 {
+  background: #081428;
+  display: flex;
+  justify-content: center;
+  padding: 80px 20px;
+}
+
+/* Secondary Button (Explore More) */
+.btn.secondary {
+  padding: 14px 35px;
+  border: 2px solid #E6C77B;
+  color: #E6C77B;
+  background: transparent;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+.btn.secondary:hover {
+  background: #E6C77B;
+  color: #050B1E;
+  /* Dark contrast on hover */
+  box-shadow: 0 0 25px rgba(230, 199, 123, 0.4);
+  transform: translateY(-3px);
+}
+
+/* ================= MOBILE RESPONSIVE ================= */
+@media (max-width: 992px) {
+
+  .num-section,
+  .num-section.reverse {
+    padding: 50px 8%;
+    gap: 40px;
+  }
+}
+
+/* ================= MOBILE REFINED ================= */
+@media (max-width: 768px) {
+
+  /* Section heading */
+  .section-heading {
+    font-size: 26px;
+    padding: 50px 16px 25px;
+    letter-spacing: 1.5px;
+    text-align: center;
+  }
+
+
+
+  /* Main service section */
+  .num-section,
+  .num-section.reverse {
+    flex-direction: column;
+    text-align: center;
+    padding: 36px 18px;
+    gap: 22px;
+  }
+
+  /* Image */
+  .num-image img {
+    width: 150px;
+    height: 150px;
+    border-radius: 18px;
+
+    /* soft glow always (mobile me hover nahi hota) */
+    border-color: rgba(230, 199, 123, 0.45);
+    box-shadow:
+      0 0 18px rgba(230, 199, 123, 0.18),
+      0 12px 30px rgba(0, 0, 0, 0.5);
+  }
+
+  /* Title */
+  .num-content h2 {
+    font-size: 24px;
+    margin-bottom: 12px;
+    letter-spacing: 0.4px;
+  }
+
+  /* Text */
+  .num-content p {
+    font-size: 15px;
+    line-height: 1.7;
+    color: #C6D0EA;
+    text-align: justify;
+  }
+
+  /* Bottom button section */
+  #buttons {
+    padding: 60px 20px;
+  }
+
+  .btn.secondary {
+    width: 100%;
+    max-width: 260px;
+    font-size: 15px;
+    padding: 13px 28px;
+  }
+}

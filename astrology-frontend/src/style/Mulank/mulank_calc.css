@@ -1,0 +1,143 @@
+/* ================= MAIN CONTAINER ================= */
+.Mulank-container {
+  position: relative;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  min-height: 100vh;
+  padding: 60px 40px;
+
+  background: linear-gradient(360deg,
+      #1b1028 0%,
+      #0b1f3a 40%,
+      #020b1f 100%);
+}
+
+/* ================= CALCULATOR ================= */
+.calc {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  z-index: 2;
+}
+
+.calculator-container {
+  background: linear-gradient(145deg, #071a3d, #020b1f);
+  border-radius: 22px;
+  max-width: 460px;
+  width: 100%;
+  padding: 38px;
+
+  border: 1px solid rgba(230, 199, 123, 0.35);
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.8),
+    0 0 40px rgba(230, 199, 123, 0.15);
+}
+
+.calculator-container h1 {
+  color: #f5d88a;
+  text-align: center;
+  margin-bottom: 22px;
+}
+
+/* ================= INPUT ================= */
+.input-group label {
+  color: #cbd5e1;
+  font-size: 0.9rem;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.date-input {
+  width: 100%;
+  height: 48px;
+  padding: 14px 16px;
+  border-radius: 14px;
+
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(245, 216, 138, 0.4);
+  color: #ffffff;
+  outline: none;
+}
+
+/* ================= BUTTON ================= */
+.calculate-btn {
+  margin-top: 24px;
+  width: 100%;
+  height: 48px;
+  border-radius: 14px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+
+  background: linear-gradient(to right, #e6c77b, #f3d98b);
+  color: #1b1b1b;
+}
+
+/* ================= RESULT ================= */
+.result-section {
+  margin-top: 32px;
+  text-align: center;
+}
+
+.life-path-number {
+  font-size: 4.6rem;
+  color: #f5d88a;
+  font-weight: 800;
+}
+
+/* ================= AI CONTAINER (FIXED) ================= */
+.lp-explain-ai {
+  flex: 1;
+  max-width: 900px;
+  max-height: 70vh;
+  min-height: 420px;
+  padding: 40px;
+
+  background: rgba(24, 38, 71, 0.75);
+  backdrop-filter: blur(12px);
+  border: 2px solid goldenrod;
+  border-radius: 20px;
+
+  color: goldenrod;
+  line-height: 1.9;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+/* ================= MARKDOWN SAFETY ================= */
+.lp-explain-ai pre {
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-x: auto;
+}
+
+.lp-explain-ai code {
+  white-space: pre-wrap;
+}
+
+/* ================= MOBILE ================= */
+@media (max-width: 768px) {
+  .Mulank-container {
+    flex-direction: column;
+    padding: 70px 16px;
+    gap: 24px;
+  }
+
+  .calculator-container {
+    padding: 22px 18px;
+  }
+
+  .lp-explain-ai {
+    width: 100%;
+    padding: 22px 18px;
+    font-size: 14px;
+    line-height: 1.7;
+    max-height: none;
+  }
+}
