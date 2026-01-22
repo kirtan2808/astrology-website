@@ -1,0 +1,65 @@
+/* ================= PERSONALITY DESCRIPTION ================= */
+
+.description.personality {
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     gap: 150px;
+
+     height: 100vh;
+     padding: 150px;
+
+     background: linear-gradient(135deg,
+               #020b1f,
+               #071a3d,
+               #0b254f);
+
+     color: #e5e7eb;
+}
+
+.description.personality .question h1 {
+     font-size: 36px;
+     color: #FFF3C4;
+     margin-bottom: 18px;
+}
+
+.description.personality .question p {
+     font-size: 16px;
+     line-height: 2.8;
+     color: #a5b4c3;
+}
+
+.description.personality .life-img img {
+     width: 300px;
+     height: 300px;
+     border-radius: 18px;
+
+     border: 1.5px solid rgba(230, 199, 123, 0.6);
+     box-shadow:
+          0 0 25px rgba(230, 199, 123, 0.35),
+          0 12px 40px rgba(0, 0, 0, 0.6);
+}
+
+/* -------- MOBILE (ONLY THIS COMPONENT) -------- */
+@media (max-width: 768px) {
+     .description.personality {
+          flex-direction: column;
+          height: auto;
+          padding: 120px 20px 60px;
+          text-align: center;
+     }
+
+     .description.personality .life-img img {
+          width: 220px;
+          height: 220px;
+     }
+
+     .description.personality .question h1 {
+          font-size: 30px;
+     }
+
+     .description.personality .question p {
+          font-size: 15px;
+          line-height: 2.4;
+     }
+}
