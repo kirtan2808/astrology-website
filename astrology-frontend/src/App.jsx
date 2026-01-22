@@ -7,8 +7,11 @@ import LifePath from "./pages/lifepath";
 import Destiny from "./pages/Destiny";
 import Soul_urge from "./pages/Soul_urge";
 import Mulank from "./pages/Mulank";
-import ExpressionNumber from "./pages/expression_number";
-import PersonalityNumber from "./pages/personality_number";
+import ExpressionNumber from "./pages/Expression";
+import PersonalityNumber from "./pages/Personality";
+import NameNumber from "./pages/Name";
+import Compatibility from "./pages/Compatibility";
+import Remedies from "./pages/Remedies";
 import AboutUs from "./Components/About/AboutUs";
 import ContectUs from "./Components/Contect/ContectUs";
 import Services from "./Components/services_numerology/services";
@@ -124,6 +127,39 @@ function App() {
           <ScrollToTop />
           <Navbar />
           <PersonalityNumber />
+          <Footer />
+        </>
+      ),
+    },
+    {
+      path: "/name-numerology",
+      element: (
+        <>
+          <ScrollToTop />
+          <Navbar />
+          <NameNumber />
+          <Footer />
+        </>
+      ),
+    },
+    {
+      path: "/compatibility",
+      element: (
+        <>
+          <ScrollToTop />
+          <Navbar />
+          <Compatibility />
+          <Footer />
+        </>
+      ),
+    },
+    {
+      path: "/numerology-remedies",
+      element: (
+        <>
+          <ScrollToTop />
+          <Navbar />
+          <Remedies />
           <Footer />
         </>
       ),

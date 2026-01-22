@@ -1,0 +1,62 @@
+/* ================= REMEDIES DESCRIPTION ================= */
+
+.description.remedies {
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     gap: 150px;
+
+     height: 100vh;
+     padding: 150px;
+
+     background: linear-gradient(135deg, #020b1f, #071a3d, #0b254f);
+     color: #e5e7eb;
+}
+
+.description.remedies .question h1 {
+     font-size: 36px;
+     color: #fff3c4;
+     margin-bottom: 18px;
+}
+
+.description.remedies .question p {
+     font-size: 16px;
+     line-height: 2.8;
+     color: #a5b4c3;
+}
+
+.description.remedies .life-img img {
+     width: 300px;
+     height: auto;
+     max-height: 300px;
+     object-fit: contain;
+     display: block;
+
+     border-radius: 18px;
+     border: 1.5px solid rgba(230, 199, 123, 0.6);
+     box-shadow: 0 0 25px rgba(230, 199, 123, 0.35),
+          0 12px 40px rgba(0, 0, 0, 0.6);
+}
+
+@media (max-width: 768px) {
+     .description.remedies {
+          flex-direction: column;
+          height: auto;
+          padding: 120px 20px 60px;
+          text-align: center;
+     }
+
+     .description.remedies .life-img img {
+          width: 220px;
+          max-height: 220px;
+     }
+
+     .description.remedies .question h1 {
+          font-size: 30px;
+     }
+
+     .description.remedies .question p {
+          font-size: 15px;
+          line-height: 2.4;
+     }
+}
