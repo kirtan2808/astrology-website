@@ -37,15 +37,36 @@ router.get("/compatibility-stream", async (req, res) => {
   setSSEHeaders(res);
 
   const prompt = `
-Return ONLY JSON.
+Return ONLY valid JSON.
+NO markdown.
+NO extra text.
+
+IMPORTANT RULES:
+- Every array item MUST be a complete sentence
+- Minimum 12 words per sentence
+- No single words
+- No short phrases
+- Professional, clear language
 
 Schema:
 {
+  "mainHeading": string,
+  "description": string,
   "compatibilityScore": number,
   "strengthAreas": string[],
   "conflictAreas": string[],
   "advice": string[]
 }
+
+Instructions:
+
+- mainHeading MUST be exactly in this format:
+  "Compatibility Analysis"
+
+- description MUST contain 3 to 4 sentences explaining:
+  What is Compatibility Analysis and how it reveals relationship dynamics.
+
+Then generate all remaining sections normally.
 
 Relationship Type: ${relationshipType}
 Person 1: ${name1}, ${dob1}

@@ -6,7 +6,7 @@ const router = express.Router();
 const { OLLAMA_URL, OLLAMA_MODEL } = require("../config/ollama");
 const { setSSEHeaders } = require("../utils/sse");
 
-/* ================= STREAM FUNCTION ================= */
+// ================= STREAM FUNCTION =================
 async function streamFromOllama(res, prompt) {
   let fullText = "";
 
@@ -18,40 +18,60 @@ async function streamFromOllama(res, prompt) {
         model: OLLAMA_MODEL,
         prompt,
         stream: true,
-        options: { temperature: 0.6, top_p: 0.9, num_predict: 400 }
-      })
+        options: { temperature: 0.6, top_p: 0.9, num_predict: 400 },
+      }),
     });
 
     if (!ollamaRes.body) return res.end();
+
     const heartbeat = setInterval(() => res.write(":\n\n"), 15000);
 
-    ollamaRes.body.on("data", chunk => {
-      chunk.toString().split("\n").forEach(line => {
-        if (!line.trim()) return;
+    ollamaRes.body.on("data", (chunk) => {
+      const lines = chunk.toString().split("\n");
+
+      for (const line of lines) {
+        if (!line.trim()) continue;
+
         try {
           const json = JSON.parse(line);
           if (json.response) fullText += json.response;
-          if (json.done) {
+
+          if (json.done === true) {
             clearInterval(heartbeat);
+
             let parsed;
-            try { parsed = JSON.parse(fullText); }
-            catch { parsed = { error: "Invalid AI JSON" }; }
+            try {
+              parsed = JSON.parse(fullText);
+            } catch (err) {
+              parsed = { error: "Invalid AI JSON response" };
+            }
+
             res.write(`data: ${JSON.stringify(parsed)}\n\n`);
             res.end();
           }
-        } catch {}
-      });
+        } catch {
+          // ignore partial chunks
+        }
+      }
     });
 
-  } catch {
+    ollamaRes.body.on("error", () => {
+      clearInterval(heartbeat);
+      res.end();
+    });
+  } catch (err) {
+    console.error("Ollama error:", err);
     res.end();
   }
 }
 
-/* ================= ROUTE ================= */
+// ================= EXPRESSION ROUTE =================
 router.get("/expression-stream", async (req, res) => {
-  const { fullName, expressionNumber } = req.query;
-  if (!fullName || !expressionNumber) return res.end();
+  const { name, expression } = req.query;
+
+  if (!name || !expression) {
+    return res.status(400).end();
+  }
 
   setSSEHeaders(res);
 
@@ -61,21 +81,43 @@ You are a professional numerologist.
 Return ONLY valid JSON.
 NO markdown.
 NO extra text.
+NO explanations outside JSON.
+
+IMPORTANT RULES:
+- Every array item MUST be a complete sentence
+- Minimum 12 words per sentence
+- No single words
+- No short phrases
+- Professional, clear language
 
 Schema:
 {
-  "meaning": string[],
+  "mainHeading": string,
+  "description": string,
+  "coreMeaning": string[],
+  "career": {
+    "bestFields": string[],
+    "workApproach": string,
+    "successTip": string
+  },
   "strengths": string[],
   "challenges": string[],
-  "careerSuggestions": string[]
+  "personalGrowth": string,
+  "relationships": string
 }
 
-Rules:
-- Each sentence minimum 12 words
-- Professional language only
+Instructions:
 
-Expression Number: ${expressionNumber}
-Full Name: ${fullName}
+- mainHeading MUST be exactly in this format:
+  "Expression Number"
+
+- description MUST contain 3 to 4 sentences explaining:
+  What is Expression Number and how it reveals natural talents, personality traits, and life direction.
+
+Then generate all remaining sections normally.
+
+Expression Number: ${expression}
+Full Name: ${name}
 `;
 
   await streamFromOllama(res, prompt);

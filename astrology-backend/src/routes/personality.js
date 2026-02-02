@@ -44,18 +44,41 @@ router.get("/personality-stream", async (req, res) => {
   setSSEHeaders(res);
 
   const prompt = `
+You are a professional numerologist.
+
 Return ONLY valid JSON.
+NO markdown.
+NO extra text.
+NO explanations outside JSON.
+
+IMPORTANT RULES:
+- Every array item MUST be a complete sentence
+- Minimum 12 words per sentence
+- No single words
+- No short phrases
+- Professional, clear language
 
 Schema:
 {
+  "mainHeading": string,
+  "description": string,
   "publicImage": string[],
   "socialBehavior": string[],
   "firstImpression": string[]
 }
 
-Rules:
-- Minimum 12 words per sentence
-- No markdown
+Instructions:
+
+- mainHeading MUST be exactly in this format:
+  "Personality Number"
+
+- description MUST contain 3 to 4 sentences explaining:
+  What a Personality Number is and how it reveals an individual's natural tendencies,
+  dominant character traits, inner motivations, and the way they interact with
+  the world and others.
+
+Then generate all remaining sections normally.
+
 
 Personality Number: ${personalityNumber}
 Full Name: ${fullName}

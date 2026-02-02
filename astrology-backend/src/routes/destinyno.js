@@ -28,6 +28,7 @@ async function streamFromOllama(res, prompt) {
 
     ollamaRes.body.on("data", (chunk) => {
       const lines = chunk.toString().split("\n");
+
       for (const line of lines) {
         if (!line.trim()) continue;
 
@@ -71,12 +72,14 @@ router.get("/destiny-stream", async (req, res) => {
 
   setSSEHeaders(res);
 
-  // 🔴 Strict JSON prompt for AI
+  // 🔥 UPDATED PROMPT – SAME STYLE AS LIFEPATH
   const prompt = `
 You are a professional numerologist.
 
 Return ONLY valid JSON.
-No markdown, no extra text.
+NO markdown.
+NO extra text.
+NO explanations outside JSON.
 
 IMPORTANT RULES:
 - Every array item MUST be a complete sentence
@@ -87,6 +90,8 @@ IMPORTANT RULES:
 
 Schema:
 {
+  "mainHeading": string,
+  "description": string,
   "destiny": number,
   "corePurpose": string[],
   "career": {
@@ -99,6 +104,16 @@ Schema:
   "money": string,
   "relationships": string
 }
+
+Instructions:
+
+- mainHeading MUST be exactly in this format:
+  "Destiny Number"
+
+- description MUST contain 3 to 4 sentences explaining:
+  What is Destiny Number and how it influences life purpose, career direction, and personal success.
+
+Then generate all remaining sections normally.
 
 Destiny Number: ${destiny}
 Name: ${name}

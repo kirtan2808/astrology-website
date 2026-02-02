@@ -94,6 +94,8 @@ IMPORTANT RULES:
 
 Schema:
 {
+  "mainHeading": string,
+  "description": string,
   "corePersonality": string[],
   "thinkingBehavior": string[],
   "workStyle": string[],
@@ -102,9 +104,20 @@ Schema:
   "lifeGuidance": string[]
 }
 
+Instructions:
+
+- mainHeading MUST be exactly in this format:
+  "Mulank Number"
+
+- description MUST contain 3 to 4 sentences explaining:
+  What is Mulank Number and how it influences personality and life path.
+
+Then generate all remaining sections normally.
+
 Mulank Number: ${mulank}
 Birthdate: ${birthdate}
 `;
+
 
   await streamFromOllama(res, prompt);
 });

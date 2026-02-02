@@ -30,9 +30,20 @@ function Mulank_calc() {
     return [];
   };
 
-  // 🔥 JSON ➜ MARKDOWN (LOGIC ONLY)
+  // 🔥 DYNAMIC JSON ➜ MARKDOWN
   const jsonToMarkdown = (data) => {
     let md = "";
+
+    // REMOVE ANY DIGIT FROM HEADING DYNAMICALLY
+    if (data.mainHeading) {
+      const cleanHeading = data.mainHeading.replace(/\d+/g, "").trim();
+      md += `# ${cleanHeading}\n\n`;
+    }
+
+    // DESCRIPTION (dynamic from backend)
+    if (data.description) {
+      md += `${data.description}\n\n`;
+    }
 
     md += `### 🔢 Core Personality\n`;
     toArray(data.corePersonality).forEach(i => md += `- ${i}\n`);
@@ -80,6 +91,7 @@ function Mulank_calc() {
         .trim();
 
       const json = JSON.parse(clean);
+
       const markdown = jsonToMarkdown(json);
       setDetails(markdown);
 

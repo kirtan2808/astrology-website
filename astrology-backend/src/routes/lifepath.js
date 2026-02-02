@@ -46,7 +46,6 @@ async function streamFromOllama(res, prompt) {
           if (json.done === true) {
             clearInterval(heartbeat);
 
-            // 🟢 Parse AI JSON safely
             let parsed;
             try {
               parsed = JSON.parse(fullText);
@@ -80,7 +79,7 @@ router.get("/lifepath-stream", async (req, res) => {
 
   setSSEHeaders(res);
 
-  // 🔴 IMPORTANT: STRICT JSON PROMPT
+  // 🔥 UPDATED PROMPT WITH HEADING + DESCRIPTION
   const prompt = `
 You are a professional numerologist.
 
@@ -98,6 +97,8 @@ IMPORTANT RULES:
 
 Schema:
 {
+  "mainHeading": string,
+  "description": string,
   "lifePath": number,
   "lifePurpose": string[],
   "career": {
@@ -110,6 +111,16 @@ Schema:
   "money": string,
   "relationships": string
 }
+
+Instructions:
+
+- mainHeading MUST be exactly in this format:
+  "Life Path Number"
+
+- description MUST contain 3 to 4 sentences explaining:
+  What is Life Path Number and how it influences personality, destiny, and career.
+
+Then generate all remaining sections normally.
 
 Life Path Number: ${lifePath}
 Birthdate: ${birthdate}
