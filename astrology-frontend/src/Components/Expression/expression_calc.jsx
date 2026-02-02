@@ -1,108 +1,204 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import MarkdownRenderer from "../MarkdownRenderer";
+import "../../style/Expression/expression_calc.css";
+import { API_BASE } from "../../utils/streamAI";
 
-const Expression_Calc = () => {
-     const [fullName, setFullName] = useState("");
-     const [showResult, setShowResult] = useState(false);
+function Expression_calc() {
+  const [name, setName] = useState("");
+  const [expression, setExpression] = useState("--");
+  const [meaning, setMeaning] = useState("");
+  const [details, setDetails] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-     const handleCalculate = () => {
-          if (!fullName.trim()) {
-               setShowResult(false);
-               return;
-          }
-          setShowResult(true);
-     };
+  const letterValues = {
+    A: 1, J: 1, S: 1,
+    B: 2, K: 2, T: 2,
+    C: 3, L: 3, U: 3,
+    D: 4, M: 4, V: 4,
+    E: 5, N: 5, W: 5,
+    F: 6, O: 6, X: 6,
+    G: 7, P: 7, Y: 7,
+    H: 8, Q: 8, Z: 8,
+    I: 9, R: 9,
+  };
 
-     return (
-          <section className="expression-section">
-               <div className="expression-container">
-                    {/* LEFT CARD */}
-                    <div className="expression-card">
-                         <h2 className="expression-title">
-                              Destiny Number <br /> Calculator
-                         </h2>
+  const reduce = (num) => {
+    let sum = 0;
+    while (num > 9) {
+      sum = 0;
+      while (num > 0) {
+        sum += num % 10;
+        num = Math.floor(num / 10);
+      }
+      num = sum;
+    }
+    return num;
+  };
 
-                         <div className="expression-form">
-                              <label className="expression-label">Enter First Name</label>
-                              <input
-                                   type="text"
-                                   className="expression-input"
-                                   placeholder=""
-                                   value={fullName}
-                                   onChange={(e) => {
-                                        setFullName(e.target.value);
-                                        setShowResult(false); // user type kare to result hide
-                                   }}
-                              />
-                         </div>
+  // 🔥 JSON ➜ MARKDOWN CONVERTER FOR EXPRESSION NUMBER
+  const jsonToMarkdown = (data) => {
+    let md = "";
 
-                         <button className="expression-btn" onClick={handleCalculate}>
-                              Calculate Destiny Number
-                         </button>
+    if (data.mainHeading) {
+      const cleanHeading = data.mainHeading.replace(/\d+/g, "").trim();
+      md += `# ${cleanHeading}\n\n`;
+    }
 
-                         <p className="expression-subtitle">Your Destiny Number</p>
+    if (data.description) {
+      md += `${data.description}\n\n`;
+    }
 
-                         <div className="expression-mini-output">
-                              {showResult ? (
-                                   <span className="expression-mini-number">5</span>
-                              ) : (
-                                   <span className="expression-mini-placeholder">--</span>
-                              )}
-                         </div>
-                    </div>
+    md += `### 🌟 Core Meaning\n`;
+    data.coreMeaning.forEach(p => md += `- ${p}\n`);
 
-                    {/* RIGHT OUTPUT PANEL (image jaisa blank box) */}
-                    <div className="expression-result-panel">
-                         {!showResult ? (
-                              // Default me bilkul empty look (no text)
-                              <div className="expression-empty" />
-                         ) : (
-                              // Button click ke baad yaha output show hoga
-                              <div className="expression-result-content">
-                                   <h3 className="expression-result-title">Result</h3>
+    md += `\n### 💼 Career Guidance\n`;
+    data.career.bestFields.forEach(c => md += `- ${c}\n`);
 
-                                   <div className="expression-result-box">
-                                        <p className="expression-result-label">Name</p>
-                                        <p className="expression-result-value">{fullName}</p>
-                                   </div>
+    md += `\n**Work Approach:** ${data.career.workApproach}\n`;
+    md += `\n**Success Tip:** ${data.career.successTip}\n`;
 
-                                   <div className="expression-result-box">
-                                        <p className="expression-result-label">Destiny Number</p>
-                                        <p className="expression-result-value big">5</p>
-                                   </div>
+    md += `\n### 💪 Strengths\n`;
+    data.strengths.forEach(s => md += `- ${s}\n`);
 
-                                   <div className="expression-result-box">
-                                        <p className="expression-result-label">Meaning</p>
-                                        <p className="expression-result-value">
-                                             Freedom-loving, adaptable, energetic
-                                        </p>
-                                   </div>
+    md += `\n### ⚠️ Challenges\n`;
+    data.challenges.forEach(w => md += `- ${w}\n`);
 
-                                   <div className="expression-result-box">
-                                        <p className="expression-result-label">Strengths</p>
-                                        <p className="expression-result-value">
-                                             Communication, versatility, creativity
-                                        </p>
-                                   </div>
+    md += `\n### 🌱 Personal Growth\n`;
+    md += `${data.personalGrowth}\n`;
 
-                                   <div className="expression-result-box">
-                                        <p className="expression-result-label">Challenges</p>
-                                        <p className="expression-result-value">
-                                             Restlessness, lack of focus
-                                        </p>
-                                   </div>
+    md += `\n### ❤️ Relationships\n`;
+    md += `${data.relationships}\n`;
 
-                                   <div className="expression-result-box">
-                                        <p className="expression-result-label">Career Suggestions</p>
-                                        <p className="expression-result-value">
-                                             Marketing, media, travel, sales, entrepreneurship
-                                        </p>
-                                   </div>
-                              </div>
-                         )}
-                    </div>
-               </div>
-          </section>
-     );
-};
+    return md;
+  };
 
-export default Expression_Calc;
+  const streamAI = async (url) => {
+    setDetails("");
+    setIsLoading(true);
+
+    let buffer = "";
+
+    try {
+      const response = await fetch(url);
+      if (!response.body) throw new Error("ReadableStream not supported");
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder("utf-8");
+
+      while (true) {
+        const { value, done } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+      }
+
+      const clean = buffer
+        .split("\n")
+        .map(line => line.replace(/^data:\s*/, ""))
+        .join("")
+        .trim();
+
+      const json = JSON.parse(clean);
+      const markdown = jsonToMarkdown(json);
+
+      setDetails(markdown);
+    } catch (err) {
+      console.error("Streaming error:", err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const calculateExpression = () => {
+    if (!name.trim()) return;
+
+    let total = 0;
+    name.toUpperCase().split("").forEach(ch => {
+      if (letterValues[ch]) total += letterValues[ch];
+    });
+
+    let result = total;
+    while (result > 9 && ![11, 22, 33].includes(result)) {
+      result = reduce(result);
+    }
+
+    const meanings = {
+      1: "Natural Leader",
+      2: "Cooperative Partner",
+      3: "Creative Communicator",
+      4: "Practical Builder",
+      5: "Freedom Lover",
+      6: "Responsible Nurturer",
+      7: "Intellectual Thinker",
+      8: "Powerful Achiever",
+      9: "Compassionate Humanitarian",
+      11: "Spiritual Visionary",
+      22: "Master Organizer",
+      33: "Master Teacher",
+    };
+
+    setExpression(result);
+    setMeaning(meanings[result]);
+    setDetails("");
+
+    const url = `${API_BASE}/api/expression-stream?name=${encodeURIComponent(
+      name
+    )}&expression=${result}`;
+
+    streamAI(url);
+  };
+
+  return (
+    <div className="Mulank-container">
+      <div className="calc">
+        <div className="calculator-container">
+          <h1>Expression Number Calculator</h1>
+
+          <div className="input-group">
+            <label>Enter Your Full Name</label>
+            <input
+              type="text"
+              className="date-input"
+              value={name}
+              onChange={e => setName(e.target.value)}
+            />
+          </div>
+
+          <button
+            className="calculate-btn"
+            onClick={calculateExpression}
+            disabled={!name || isLoading}
+          >
+            {isLoading ? "Calculating..." : "Calculate Expression Number"}
+          </button>
+
+          <div className="result-section">
+            <div className="result-label">Your Expression Number</div>
+            <div className="life-path-number">{expression}</div>
+
+            <div className={`meaning-text ${meaning ? "show" : ""}`}>
+              {meaning}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="lp-explain-ai">
+        {isLoading && (
+          <div className="ai-loader">
+            <div className="ai-ring"></div>
+            <div className="ai-dots">
+              <span></span><span></span><span></span>
+            </div>
+            <p>Reading your Expression energy...</p>
+          </div>
+        )}
+
+        {!isLoading && details && (
+          <MarkdownRenderer content={details} />
+        )}
+      </div>
+    </div>
+  );
+}
+
+export default Expression_calc;

@@ -39,19 +39,36 @@ router.get("/name-analysis-stream", async (req, res) => {
   setSSEHeaders(res);
 
   const prompt = `
-Return ONLY JSON.
+Return ONLY valid JSON.
+NO markdown.
+NO extra text.
+
+IMPORTANT RULES:
+- Every array item MUST be a complete sentence
+- Minimum 12 words per sentence
+- No single words
+- No short phrases
+- Professional, clear language
 
 Schema:
 {
+  "mainHeading": string,
+  "description": string,
   "overallVibration": string[],
   "positiveEffects": string[],
   "negativeEffects": string[],
   "nameCorrectionAdvice": string[]
 }
 
-Rules:
-- Clear, professional sentences
-- Minimum 12 words
+Instructions:
+
+- mainHeading MUST be exactly in this format:
+  "Name Number"
+
+- description MUST contain 3 to 4 sentences explaining:
+  What is Name Number and how it influences personality and life path.
+
+Then generate all remaining sections normally.
 
 Name Number: ${nameNumber}
 Full Name: ${fullName}

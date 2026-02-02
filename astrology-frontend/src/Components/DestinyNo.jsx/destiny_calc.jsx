@@ -35,46 +35,43 @@ function Destiny_calc() {
     return num;
   };
 
-  // 🔥 JSON ➜ MARKDOWN (LOGIC ONLY)
+  // 🔥 JSON ➜ MARKDOWN WITH DYNAMIC HEADING + DESCRIPTION
   const jsonToMarkdown = (data) => {
     let md = "";
 
+    if (data.mainHeading) {
+      const cleanHeading = data.mainHeading.replace(/\d+/g, "").trim();
+      md += `# ${cleanHeading}\n\n`;
+    }
+
+    if (data.description) {
+      md += `${data.description}\n\n`;
+    }
+
     md += `### 🌟 Core Life Purpose\n`;
-    if (Array.isArray(data.corePurpose))
-      data.corePurpose.forEach(p => md += `- ${p}\n`);
+    data.corePurpose.forEach(p => md += `- ${p}\n`);
 
     md += `\n### 💼 Career Direction\n`;
-    if (data.career?.suitable)
-      data.career.suitable.forEach(c => md += `- ${c}\n`);
-    if (data.career?.workStyle)
-      md += `\n**Work Style:** ${data.career.workStyle}\n`;
-    if (data.career?.growthAdvice)
-      md += `\n**Growth Advice:** ${data.career.growthAdvice}\n`;
+    data.career.suitable.forEach(c => md += `- ${c}\n`);
 
-    if (Array.isArray(data.strengths)) {
-      md += `\n### 💪 Strengths\n`;
-      data.strengths.forEach(s => md += `- ${s}\n`);
-    }
+    md += `\n**Work Style:** ${data.career.workStyle}\n`;
+    md += `\n**Growth Advice:** ${data.career.growthAdvice}\n`;
 
-    if (Array.isArray(data.weaknesses)) {
-      md += `\n### ⚠️ Weaknesses\n`;
-      data.weaknesses.forEach(w => md += `- ${w}\n`);
-    }
+    md += `\n### 💪 Strengths\n`;
+    data.strengths.forEach(s => md += `- ${s}\n`);
 
-    if (data.money) {
-      md += `\n### 💰 Money Mindset\n`;
-      md += `${data.money}\n`;
-    }
+    md += `\n### ⚠️ Weaknesses\n`;
+    data.weaknesses.forEach(w => md += `- ${w}\n`);
 
-    if (data.relationships) {
-      md += `\n### ❤️ Relationships\n`;
-      md += `${data.relationships}\n`;
-    }
+    md += `\n### 💰 Money Mindset\n`;
+    md += `${data.money}\n`;
+
+    md += `\n### ❤️ Relationships\n`;
+    md += `${data.relationships}\n`;
 
     return md;
   };
 
-  // ✅ STREAM LOGIC (DESIGN SAFE)
   const streamAI = async (url) => {
     setDetails("");
     setIsLoading(true);
@@ -106,7 +103,6 @@ function Destiny_calc() {
       setDetails(markdown);
     } catch (err) {
       console.error("Streaming error:", err);
-      setDetails("⚠️ Error fetching Destiny data.");
     } finally {
       setIsLoading(false);
     }
@@ -126,18 +122,18 @@ function Destiny_calc() {
     }
 
     const meanings = {
-      1: "Leader – Independent and confident",
-      2: "Diplomat – Peaceful and cooperative",
-      3: "Creator – Expressive and joyful",
-      4: "Builder – Practical and disciplined",
-      5: "Explorer – Freedom loving and adaptable",
-      6: "Caretaker – Responsible and loving",
-      7: "Thinker – Spiritual and analytical",
-      8: "Achiever – Powerful and ambitious",
-      9: "Humanitarian – Compassionate and giving",
-      11: "Master Intuitive – Visionary and inspirational",
-      22: "Master Builder – Practical visionary",
-      33: "Master Teacher – Spiritual healer",
+      1: "Leader",
+      2: "Diplomat",
+      3: "Creator",
+      4: "Builder",
+      5: "Explorer",
+      6: "Caretaker",
+      7: "Thinker",
+      8: "Achiever",
+      9: "Humanitarian",
+      11: "Master Intuitive",
+      22: "Master Builder",
+      33: "Master Teacher",
     };
 
     setDestiny(result);
@@ -153,7 +149,6 @@ function Destiny_calc() {
 
   return (
     <div className="Mulank-container">
-      {/* LEFT – CALCULATOR */}
       <div className="calc">
         <div className="calculator-container">
           <h1>Destiny Number Calculator</h1>
@@ -179,6 +174,7 @@ function Destiny_calc() {
           <div className="result-section">
             <div className="result-label">Your Destiny Number</div>
             <div className="life-path-number">{destiny}</div>
+
             <div className={`meaning-text ${meaning ? "show" : ""}`}>
               {meaning}
             </div>
@@ -186,7 +182,6 @@ function Destiny_calc() {
         </div>
       </div>
 
-      {/* RIGHT – AI RESULT */}
       <div className="lp-explain-ai">
         {isLoading && (
           <div className="ai-loader">
@@ -198,7 +193,9 @@ function Destiny_calc() {
           </div>
         )}
 
-        {!isLoading && details && <MarkdownRenderer content={details} />}
+        {!isLoading && details && (
+          <MarkdownRenderer content={details} />
+        )}
       </div>
     </div>
   );

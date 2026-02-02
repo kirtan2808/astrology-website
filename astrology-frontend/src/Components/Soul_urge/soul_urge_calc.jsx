@@ -25,30 +25,38 @@ function SoulUrge_calc() {
     return num;
   };
 
-  // 🛡 Defensive helper
   const toArray = (v) => {
     if (Array.isArray(v)) return v;
     if (typeof v === "string") return [v];
     return [];
   };
 
-  // 🔥 JSON ➜ MARKDOWN (formatted like your second screenshot)
+  // 🔥 UPDATED JSON ➜ MARKDOWN WITH HEADING + DESCRIPTION
   const jsonToMarkdown = (data) => {
     let md = "";
 
-    md += `🌟 **Core Life Purpose**\n`;
+    if (data.mainHeading) {
+      const cleanHeading = data.mainHeading.replace(/\d+/g, "").trim();
+      md += `# ${cleanHeading}\n\n`;
+    }
+
+    if (data.description) {
+      md += `${data.description}\n\n`;
+    }
+
+    md += `### 🌟 Inner Desire\n`;
     toArray(data.innerDesire).forEach((i) => (md += `- ${i}\n`));
 
-    md += `\n🧠 **Emotional Nature**\n`;
+    md += `\n### 🧠 Emotional Nature\n`;
     toArray(data.emotionalNature).forEach((i) => (md += `- ${i}\n`));
 
-    md += `\n💞 **Relationships**\n`;
+    md += `\n### 💞 Relationships\n`;
     toArray(data.relationships).forEach((i) => (md += `- ${i}\n`));
 
-    md += `\n💼 **Work Satisfaction**\n`;
+    md += `\n### 💼 Work Satisfaction\n`;
     toArray(data.workSatisfaction).forEach((i) => (md += `- ${i}\n`));
 
-    md += `\n🌱 **Growth / Inner Fulfillment Advice**\n`;
+    md += `\n### 🌱 Inner Fulfillment Advice\n`;
     toArray(data.innerFulfillmentAdvice).forEach((i) => (md += `- ${i}\n`));
 
     return md;
@@ -57,6 +65,7 @@ function SoulUrge_calc() {
   const streamAI = async (url) => {
     setDetails("");
     setIsLoading(true);
+
     let buffer = "";
 
     try {
@@ -80,6 +89,7 @@ function SoulUrge_calc() {
 
       const json = JSON.parse(clean);
       const markdown = jsonToMarkdown(json);
+
       setDetails(markdown);
     } catch (err) {
       console.error("Streaming error:", err);
@@ -123,12 +133,12 @@ function SoulUrge_calc() {
     const url = `${API_BASE}/api/soulurge-stream?name=${encodeURIComponent(
       name
     )}&soulUrge=${result}`;
+
     streamAI(url);
   };
 
   return (
     <div className="soulurge-container">
-      {/* LEFT – CALCULATOR */}
       <div className="soulurge-calc">
         <div className="soulurge-calculator-box">
           <h1>Soul Urge Number Calculator</h1>
@@ -161,7 +171,6 @@ function SoulUrge_calc() {
         </div>
       </div>
 
-      {/* RIGHT – AI RESULT */}
       <div className="soulurge-ai-output">
         {isLoading && (
           <div className="soulurge-ai-loader">

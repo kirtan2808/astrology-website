@@ -29,15 +29,27 @@ function Lifepath_calc() {
     return num;
   };
 
-  // 🔥 JSON ➜ MARKDOWN (LOGIC ONLY)
+  // 🔥 JSON ➜ MARKDOWN WITH DYNAMIC HEADING + DESCRIPTION
   const jsonToMarkdown = (data) => {
     let md = "";
+
+    // Dynamic heading but remove digits (translator friendly)
+    if (data.mainHeading) {
+      const cleanHeading = data.mainHeading.replace(/\d+/g, "").trim();
+      md += `# ${cleanHeading}\n\n`;
+    }
+
+    // Dynamic description
+    if (data.description) {
+      md += `${data.description}\n\n`;
+    }
 
     md += `### 🌱 Life Purpose\n`;
     data.lifePurpose.forEach(p => md += `- ${p}\n`);
 
     md += `\n### 💼 Career & Work\n`;
     data.career.suitable.forEach(c => md += `- ${c}\n`);
+
     md += `\n**Work Style:** ${data.career.workStyle}\n`;
     md += `\n**Growth Advice:** ${data.career.growthAdvice}\n`;
 
@@ -56,7 +68,6 @@ function Lifepath_calc() {
     return md;
   };
 
-  // ✅ STREAM LOGIC (DESIGN SAFE)
   const streamAI = async (url) => {
     setDetails("");
     setIsLoading(true);
@@ -132,7 +143,6 @@ function Lifepath_calc() {
 
   return (
     <div className="Mulank-container">
-      {/* LEFT – CALCULATOR */}
       <div className="calc">
         <div className="calculator-container">
           <h1>Life Path Number Calculator</h1>
@@ -166,7 +176,6 @@ function Lifepath_calc() {
         </div>
       </div>
 
-      {/* RIGHT – AI RESULT */}
       <div className="lp-explain-ai">
         {isLoading && (
           <div className="ai-loader">

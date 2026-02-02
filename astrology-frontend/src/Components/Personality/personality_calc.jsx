@@ -1,96 +1,216 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import MarkdownRenderer from "../MarkdownRenderer";
 import "../../style/Personality/personality_calc.css";
+import { API_BASE } from "../../utils/streamAI";
 
-const PYTHAGOREAN_MAP = {
-     A: 1, J: 1, S: 1,
-     B: 2, K: 2, T: 2,
-     C: 3, L: 3, U: 3,
-     D: 4, M: 4, V: 4,
-     E: 5, N: 5, W: 5,
-     F: 6, O: 6, X: 6,
-     G: 7, P: 7, Y: 7,
-     H: 8, Q: 8, Z: 8,
-     I: 9, R: 9,
-};
+function PersonalityCalc() {
+  const [name, setName] = useState("");
+  const [personality, setPersonality] = useState("--");
+  const [meaning, setMeaning] = useState("");
+  const [details, setDetails] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-const VOWELS = new Set(["A", "E", "I", "O", "U"]);
-const isMasterNumber = (n) => n === 11 || n === 22 || n === 33;
+  const letterValues = {
+    A: 1, J: 1, S: 1,
+    B: 2, K: 2, T: 2,
+    C: 3, L: 3, U: 3,
+    D: 4, M: 4, V: 4,
+    E: 5, N: 5, W: 5,
+    F: 6, O: 6, X: 6,
+    G: 7, P: 7, Y: 7,
+    H: 8, Q: 8, Z: 8,
+    I: 9, R: 9,
+  };
 
-const reduceNumber = (num) => {
-     let n = num;
-     while (n > 9 && !isMasterNumber(n)) {
-          n = String(n)
-               .split("")
-               .reduce((acc, d) => acc + Number(d), 0);
-     }
-     return n;
-};
+  const vowels = ["A", "E", "I", "O", "U"];
 
-const calculatePersonalityNumber = (name) => {
-     if (!name) return 0;
+  const reduce = (num) => {
+    let sum = 0;
+    while (num > 9) {
+      sum = 0;
+      while (num > 0) {
+        sum += num % 10;
+        num = Math.floor(num / 10);
+      }
+      num = sum;
+    }
+    return num;
+  };
 
-     const letters = name
-          .toUpperCase()
-          .replace(/[^A-Z]/g, "")
-          .split("");
+  const jsonToMarkdown = (data) => {
+    let md = "";
 
-     // ✅ Only consonants
-     const consonants = letters.filter((ch) => !VOWELS.has(ch));
+    if (data.mainHeading) {
+      const cleanHeading = data.mainHeading.replace(/\d+/g, "").trim();
+      md += `# ${cleanHeading}\n\n`;
+    }
 
-     const total = consonants.reduce((sum, ch) => sum + (PYTHAGOREAN_MAP[ch] || 0), 0);
-     return reduceNumber(total);
-};
+    if (data.description) {
+      md += `${data.description}\n\n`;
+    }
 
-const PersonalityCalc = () => {
-     const [fullName, setFullName] = useState("");
-     const [personalityNumber, setPersonalityNumber] = useState(null);
+    md += `### 🌍 Public Image\n`;
+    data.publicImage?.forEach(p => md += `- ${p}\n`);
 
-     const handleCalculate = () => {
-          const result = calculatePersonalityNumber(fullName);
-          setPersonalityNumber(result);
-     };
+    md += `\n### 🌱 Social Behavior\n`;
+    data.socialBehavior?.forEach(p => md += `- ${p}\n`);
 
-     return (
-          <div className="Personality-container">
-               {/* LEFT SIDE - CALCULATOR */}
-               <div className="calc personality">
-                    <div className="personality-card-ui">
-                         <h2>Personality Number<br />Calculator</h2>
+    md += `\n### 👀 First Impression\n`;
+    data.firstImpression?.forEach(p => md += `- ${p}\n`);
 
-                         <label>Enter Full Name</label>
-                         <input
-                              type="text"
-                              placeholder="Full Name"
-                              value={fullName}
-                              onChange={(e) => setFullName(e.target.value)}
-                         />
+    return md;
+  };
 
-                         <button onClick={handleCalculate}>
-                              Calculate Personality Number
-                         </button>
+  // 🔥 UPDATED STREAM FUNCTION – MADE COMPATIBLE WITH YOUR BACKEND
+  const streamAI = async (url) => {
+    setDetails("");
+    setIsLoading(true);
 
-                         <p className="result-title">Your Personality Number</p>
-                         <div className="result-box">
-                              {personalityNumber !== null ? personalityNumber : "--"}
-                         </div>
-                    </div>
-               </div>
+    let buffer = "";
 
-               {/* RIGHT SIDE - OUTPUT BOX */}
-               <div className="personality-output-ui">
-                    <h3>Personality Number Output</h3>
+    try {
+      const response = await fetch(url);
+      if (!response.body) throw new Error("ReadableStream not supported");
 
-                    <p>
-                         <strong>Personality Number : </strong>{" "}
-                         {personalityNumber !== null ? personalityNumber : "--"}
-                    </p>
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder("utf-8");
 
-                    <p style={{ marginTop: "20px", opacity: "0.7" }}>
-                         (Public image, Social behavior, First impression traits will come from API)
-                    </p>
-               </div>
+      while (true) {
+        const { value, done } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+      }
+
+      // 🔥 Extract JSON from raw SSE text
+      let clean = buffer
+        .split("\n")
+        .map(line => line.replace(/^data:\s*/, ""))
+        .join("")
+        .trim();
+
+      // Find JSON block safely
+      const jsonStart = clean.indexOf("{");
+      const jsonEnd = clean.lastIndexOf("}");
+
+      if (jsonStart === -1 || jsonEnd === -1) {
+        throw new Error("No valid JSON found in response");
+      }
+
+      const jsonString = clean.substring(jsonStart, jsonEnd + 1);
+
+      const json = JSON.parse(jsonString);
+
+      const markdown = jsonToMarkdown(json);
+
+      setDetails(markdown);
+
+    } catch (err) {
+      console.error("Streaming error:", err);
+
+      setDetails(
+        "⚠️ Unable to load personality analysis at the moment. Please try again."
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const calculatePersonality = () => {
+    if (!name.trim()) return;
+
+    let total = 0;
+
+    name.toUpperCase().split("").forEach(ch => {
+      if (letterValues[ch] && !vowels.includes(ch)) {
+        total += letterValues[ch];
+      }
+    });
+
+    let result = total;
+
+    while (result > 9 && ![11, 22, 33].includes(result)) {
+      result = reduce(result);
+    }
+
+    const meanings = {
+      1: "Confident & Independent",
+      2: "Gentle & Cooperative",
+      3: "Friendly & Expressive",
+      4: "Practical & Reliable",
+      5: "Energetic & Dynamic",
+      6: "Warm & Caring",
+      7: "Reserved & Thoughtful",
+      8: "Powerful & Authoritative",
+      9: "Compassionate & Charismatic",
+      11: "Highly Intuitive",
+      22: "Strong Presence",
+      33: "Inspiring Personality",
+    };
+
+    setPersonality(result);
+    setMeaning(meanings[result]);
+    setDetails("");
+
+    const url = `${API_BASE}/api/personality-stream?fullName=${encodeURIComponent(
+      name
+    )}&personalityNumber=${result}`;
+
+    streamAI(url);
+  };
+
+  return (
+    <div className="Personality-container">
+      <div className="calc">
+        <div className="calculator-container">
+          <h1>Personality Number Calculator</h1>
+
+          <div className="input-group">
+            <label>Enter Your Full Name</label>
+            <input
+              type="text"
+              className="date-input"
+              value={name}
+              onChange={e => setName(e.target.value)}
+            />
           </div>
-     );
-};
+
+          <button
+            className="calculate-btn"
+            onClick={calculatePersonality}
+            disabled={!name || isLoading}
+          >
+            {isLoading ? "Calculating..." : "Calculate Personality Number"}
+          </button>
+
+          <div className="result-section">
+            <div className="result-label">Your Personality Number</div>
+            <div className="life-path-number">{personality}</div>
+
+            <div className={`meaning-text ${meaning ? "show" : ""}`}>
+              {meaning}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="lp-explain-ai">
+        {isLoading && (
+          <div className="ai-loader">
+            <div className="ai-ring"></div>
+            <div className="ai-dots">
+              <span></span><span></span><span></span>
+            </div>
+            <p>Reading your Personality energy...</p>
+          </div>
+        )}
+
+        {!isLoading && details && (
+          <MarkdownRenderer content={details} />
+        )}
+      </div>
+    </div>
+  );
+}
 
 export default PersonalityCalc;

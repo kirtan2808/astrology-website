@@ -22,6 +22,7 @@ const destinynoRoute = require("./routes/destinyno");
 const soulurgeRoute = require("./routes/soulurge");
 const compatibilityRoute = require("./routes/compatibility");
 const nameRoute = require("./routes/name");
+const expressionRoute = require("./routes/expression");
 const personalityRoute = require("./routes/personality");
 const remediesRoute = require("./routes/remedies");
 app.use("/api", mulankRoute);
@@ -30,6 +31,7 @@ app.use("/api", destinynoRoute);
 app.use("/api", soulurgeRoute);
 app.use("/api", compatibilityRoute);
 app.use("/api", nameRoute);
+app.use("/api", expressionRoute);
 app.use("/api", personalityRoute);
 app.use("/api", remediesRoute);
 // ================= SERVER =================
