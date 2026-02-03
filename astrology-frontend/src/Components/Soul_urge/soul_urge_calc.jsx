@@ -134,7 +134,7 @@ function SoulUrge_calc() {
 
     const url = `${API_BASE}/api/soulurge-stream?name=${encodeURIComponent(
       name
-    )}&soulUrge=${result}`;
+    )}&soulUrge=${result}&language=${language}`;
 
     streamAI(url);
   };

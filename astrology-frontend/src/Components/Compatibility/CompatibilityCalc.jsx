@@ -98,7 +98,7 @@ function CompatibilityCalc() {
       name2
     )}&dob2=${encodeURIComponent(
       dob2
-    )}&relationshipType=${encodeURIComponent(relationshipType)}`;
+    )}&relationshipType=${encodeURIComponent(relationshipType)}&language=${language}`;
 
     streamAI(url);
   };

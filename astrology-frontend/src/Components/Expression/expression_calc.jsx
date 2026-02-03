@@ -144,7 +144,7 @@ function Expression_calc() {
 
     const url = `${API_BASE}/api/expression-stream?name=${encodeURIComponent(
       name
-    )}&expression=${result}`;
+    )}&expression=${result}&language=${language}`;
 
     streamAI(url);
   };

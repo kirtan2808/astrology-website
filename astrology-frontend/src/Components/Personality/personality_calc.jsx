@@ -156,7 +156,7 @@ function PersonalityCalc() {
 
     const url = `${API_BASE}/api/personality-stream?fullName=${encodeURIComponent(
       name
-    )}&personalityNumber=${result}`;
+    )}&personalityNumber=${result}&language=${language}`;
 
     streamAI(url);
   };

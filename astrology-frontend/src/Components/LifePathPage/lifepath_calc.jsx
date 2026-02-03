@@ -139,7 +139,7 @@ function Lifepath_calc() {
     setMeaning(meanings[result]);
     setDetails("");
 
-    const url = `${API_BASE}/api/lifepath-stream?birthdate=${birthDate}&lifePath=${result}`;
+    const url = `${API_BASE}/api/lifepath-stream?birthdate=${birthDate}&lifePath=${result}&language=${language}`;
     streamAI(url);
   };
 
@@ -160,10 +160,10 @@ function Lifepath_calc() {
             />
           </div>
 
-<LanguageSelect
-  language={language}
-  setLanguage={setLanguage}
-/>
+          <LanguageSelect
+            language={language}
+            setLanguage={setLanguage}
+          />
           <button
             className="calculate-btn"
             onClick={calculateLifePath}

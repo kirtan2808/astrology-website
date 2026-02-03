@@ -64,7 +64,7 @@ const RemediesCalc = () => {
       fullName
     )}&dob=${encodeURIComponent(dob)}&problemArea=${encodeURIComponent(
       problemArea
-    )}`;
+    )}&language=${language}`;
 
     streamAI(url);
   };

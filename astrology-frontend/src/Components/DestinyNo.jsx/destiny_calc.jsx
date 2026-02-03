@@ -145,7 +145,7 @@ function Destiny_calc() {
 
     const url = `${API_BASE}/api/destiny-stream?name=${encodeURIComponent(
       name
-    )}&destiny=${result}`;
+    )}&destiny=${result}&language=${language}`;
 
     streamAI(url);
   };
