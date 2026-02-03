@@ -1,95 +1,150 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import "../../style/Remedies/RemediesCalc.css";
+import { API_BASE } from "../../utils/streamAI";
 
 const RemediesCalc = () => {
-     const [fullName, setFullName] = useState("");
-     const [dob, setDob] = useState("");
-     const [problemArea, setProblemArea] = useState("Career");
+  const [fullName, setFullName] = useState("");
+  const [dob, setDob] = useState("");
+  const [problemArea, setProblemArea] = useState("Career");
 
-     const [result, setResult] = useState(null);
+  const [output, setOutput] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-     const handleCalculate = () => {
-          // ❌ No API call here (backend person will add)
-          setResult({
-               luckyNumber: "--",
-               luckyColor: "--",
-               luckyDay: "--",
-               mantra: "--",
-               guidance: "--",
-               lifestyleTip: "--",
-          });
-     };
+  // Restrict calendar to today
+  const today = new Date().toISOString().split("T")[0];
 
-     return (
-          <div className="Remedies-container">
-               {/* LEFT SIDE - CALCULATOR */}
-               <div className="calc remedies">
-                    <div className="remedies-card-ui">
-                         <h2>
-                              Remedies & <br /> Guidance
-                         </h2>
+  // Stream AI from backend
+  const streamAI = async (url) => {
+    setOutput(null);
+    setIsLoading(true);
 
-                         <label>Full Name</label>
-                         <input
-                              type="text"
-                              placeholder="Enter Full Name"
-                              value={fullName}
-                              onChange={(e) => setFullName(e.target.value)}
-                         />
+    let buffer = "";
 
-                         <label>Date of Birth</label>
-                         <input type="date" value={dob} onChange={(e) => setDob(e.target.value)} />
+    try {
+      const response = await fetch(url);
 
-                         <label>Problem Area</label>
-                         <select value={problemArea} onChange={(e) => setProblemArea(e.target.value)}>
-                              <option value="Career">Career</option>
-                              <option value="Health">Health</option>
-                              <option value="Relationship">Relationship</option>
-                              <option value="Finance">Finance</option>
-                              <option value="Education">Education</option>
-                         </select>
+      if (!response.body) throw new Error("ReadableStream not supported");
 
-                         <button onClick={handleCalculate}>Get Remedies</button>
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder("utf-8");
 
-                         <p className="result-title">Your Remedies Output</p>
-                         <div className="result-box">{result ? "Ready" : "--"}</div>
-                    </div>
-               </div>
+      while (true) {
+        const { value, done } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+      }
 
-               {/* RIGHT SIDE - OUTPUT BOX */}
-               <div className="remedies-output-ui">
-                    <h3>Remedies & Guidance Output</h3>
+      // Clean SSE formatting
+      const clean = buffer
+        .split("\n")
+        .map((line) => line.replace(/^data:\s*/, ""))
+        .join("")
+        .trim();
 
-                    <p>
-                         <strong>Lucky Number:</strong> {result ? result.luckyNumber : "--"}
-                    </p>
+      if (!clean) {
+        throw new Error("No valid JSON found in response");
+      }
 
-                    <p>
-                         <strong>Lucky Color:</strong> {result ? result.luckyColor : "--"}
-                    </p>
+      const json = JSON.parse(clean); // ONLY parse what backend returns dynamically
+      setOutput(json);
+    } catch (err) {
+      console.error("Streaming error:", err);
+      setOutput(null); // do NOT show any static fallback
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-                    <p>
-                         <strong>Lucky Day:</strong> {result ? result.luckyDay : "--"}
-                    </p>
+  const handleCalculate = () => {
+    if (!fullName || !dob || !problemArea) return;
 
-                    <p>
-                         <strong>Mantra:</strong> {result ? result.mantra : "--"}
-                    </p>
+    const url = `${API_BASE}/api/remedies-stream?name=${encodeURIComponent(
+      fullName
+    )}&dob=${encodeURIComponent(dob)}&problemArea=${encodeURIComponent(
+      problemArea
+    )}`;
 
-                    <p>
-                         <strong>Lifestyle advice:</strong> {result ? result.guidance : "--"}
-                    </p>
+    streamAI(url);
+  };
 
-                    <p>
-                         <strong>Lifestyle Tip:</strong> {result ? result.lifestyleTip : "--"}
-                    </p>
+  return (
+    <div className="Remedies-container">
+      {/* LEFT SIDE - CALCULATOR */}
+      <div className="calc remedies">
+        <div className="remedies-card-ui">
+          <h2>Remedies & Guidance</h2>
 
-                    <p style={{ marginTop: "20px", opacity: "0.7" }}>
-                         (Final remedies will come from API)
-                    </p>
-               </div>
+          <label>Full Name</label>
+          <input
+            type="text"
+            value={fullName}
+            onChange={(e) => setFullName(e.target.value)}
+          />
+
+          <label>Date of Birth</label>
+          <input
+            type="date"
+            max={today}
+            value={dob}
+            onChange={(e) => setDob(e.target.value)}
+          />
+
+          <label>Problem Area</label>
+          <select
+            value={problemArea}
+            onChange={(e) => setProblemArea(e.target.value)}
+          >
+            <option value="Career">Career</option>
+            <option value="Health">Health</option>
+            <option value="Relationship">Relationship</option>
+            <option value="Finance">Finance</option>
+            <option value="Education">Education</option>
+          </select>
+
+          <button
+            onClick={handleCalculate}
+            disabled={!fullName || !dob || isLoading}
+          >
+            {isLoading ? "Generating..." : "Get Remedies"}
+          </button>
+        </div>
+      </div>
+
+      {/* RIGHT SIDE - OUTPUT BOX */}
+      <div className="remedies-output-ui">
+        <h3>Remedies & Guidance Output</h3>
+
+        {isLoading && <p>Generating your personalized remedies...</p>}
+
+        {/* Display dynamic output only */}
+        {!isLoading && output && (
+          <div>
+            {/* Render all JSON keys dynamically */}
+            {Object.entries(output).map(([key, value]) => {
+              if (Array.isArray(value)) {
+                return (
+                  <div key={key}>
+                    <strong>{key.replace(/([A-Z])/g, " $1")}:</strong>
+                    <ul>
+                      {value.map((item, index) => (
+                        <li key={index}>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                );
+              } else {
+                return (
+                  <p key={key}>
+                    <strong>{key.replace(/([A-Z])/g, " $1")}:</strong> {value}
+                  </p>
+                );
+              }
+            })}
           </div>
-     );
+        )}
+      </div>
+    </div>
+  );
 };
 
 export default RemediesCalc;

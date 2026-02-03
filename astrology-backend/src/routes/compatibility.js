@@ -6,37 +6,82 @@ const router = express.Router();
 const { OLLAMA_URL, OLLAMA_MODEL } = require("../config/ollama");
 const { setSSEHeaders } = require("../utils/sse");
 
+// ===== STREAM FUNCTION (SAME AS DESTINY) =====
 async function streamFromOllama(res, prompt) {
-  let text = "";
+  let fullText = "";
 
-  const ollamaRes = await fetch(OLLAMA_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ model: OLLAMA_MODEL, prompt, stream: true })
-  });
-
-  ollamaRes.body.on("data", chunk => {
-    chunk.toString().split("\n").forEach(line => {
-      if (!line.trim()) return;
-      try {
-        const json = JSON.parse(line);
-        if (json.response) text += json.response;
-        if (json.done) {
-          res.write(`data: ${text}\n\n`);
-          res.end();
-        }
-      } catch {}
+  try {
+    const ollamaRes = await fetch(OLLAMA_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: OLLAMA_MODEL,
+        prompt,
+        stream: true,
+        options: { temperature: 0.7, top_p: 0.9, num_predict: 500 },
+      }),
     });
-  });
+
+    if (!ollamaRes.body) return res.end();
+
+    const heartbeat = setInterval(() => res.write(":\n\n"), 15000);
+
+    ollamaRes.body.on("data", (chunk) => {
+      const lines = chunk.toString().split("\n");
+
+      for (const line of lines) {
+        if (!line.trim()) continue;
+
+        try {
+          const json = JSON.parse(line);
+
+          if (json.response) {
+            fullText += json.response;
+          }
+
+          if (json.done === true) {
+            clearInterval(heartbeat);
+
+            let parsed;
+            try {
+              parsed = JSON.parse(fullText);
+            } catch (err) {
+              parsed = { error: "Invalid AI JSON response" };
+            }
+
+            res.write(`data: ${JSON.stringify(parsed)}\n\n`);
+            res.end();
+          }
+        } catch {
+          // ignore partial chunks
+        }
+      }
+    });
+
+    ollamaRes.body.on("error", () => {
+      clearInterval(heartbeat);
+      res.end();
+    });
+  } catch (err) {
+    console.error("Ollama error:", err);
+    res.end();
+  }
 }
+
+// ============ ROUTE ============
 
 router.get("/compatibility-stream", async (req, res) => {
   const { name1, dob1, name2, dob2, relationshipType } = req.query;
-  if (!name1 || !dob1 || !name2 || !dob2 || !relationshipType) return res.end();
+
+  if (!name1 || !dob1 || !name2 || !dob2 || !relationshipType) {
+    return res.end();
+  }
 
   setSSEHeaders(res);
 
   const prompt = `
+You are a professional relationship numerologist.
+
 Return ONLY valid JSON.
 NO markdown.
 NO extra text.
@@ -60,11 +105,13 @@ Schema:
 
 Instructions:
 
-- mainHeading MUST be exactly in this format:
+- mainHeading MUST be exactly:
   "Compatibility Analysis"
 
 - description MUST contain 3 to 4 sentences explaining:
-  What is Compatibility Analysis and how it reveals relationship dynamics.
+  What is Compatibility Analysis and how it helps understand relationship dynamics, emotional bonding, and long-term harmony.
+
+- compatibilityScore must be realistic number between 40 and 98
 
 Then generate all remaining sections normally.
 
