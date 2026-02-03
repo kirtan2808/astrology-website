@@ -1,6 +1,6 @@
 import { useState } from "react";
 import MarkdownRenderer from "../MarkdownRenderer";
-import "../../style/Compatibility/CompatibilityCalc.css";
+import "../../style/DestinyNo/destiny_calc.css";
 import { API_BASE } from "../../utils/streamAI";
 
 function CompatibilityCalc() {
@@ -13,35 +13,42 @@ function CompatibilityCalc() {
   const [details, setDetails] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  // 🔥 Convert JSON to Markdown
+  // Restrict calendar to today only
+  const today = new Date().toISOString().split("T")[0];
+
   const jsonToMarkdown = (data) => {
     let md = "";
 
-    if (data.mainHeading) {
-      const cleanHeading = data.mainHeading.replace(/[:\s]*\d+/g, "").trim();
-      md += `# ${cleanHeading}\n\n`;
-    }
+    md += `# Compatibility Analysis\n\n`;
 
     if (data.description) {
       md += `${data.description}\n\n`;
     }
 
     md += `### 💞 Compatibility Score\n`;
-    md += `**${data.compatibilityScore}%**\n\n`;
+    md += `**${data.compatibilityScore || 0}%**\n\n`;
 
     md += `### 💚 Strength Areas\n`;
-    data.strengthAreas?.forEach((p) => (md += `- ${p}\n`));
+
+    if (Array.isArray(data.strengthAreas)) {
+      data.strengthAreas.forEach((p) => (md += `- ${p}\n`));
+    }
 
     md += `\n### ⚠️ Conflict Areas\n`;
-    data.conflictAreas?.forEach((p) => (md += `- ${p}\n`));
+
+    if (Array.isArray(data.conflictAreas)) {
+      data.conflictAreas.forEach((p) => (md += `- ${p}\n`));
+    }
 
     md += `\n### ✨ Advice\n`;
-    data.advice?.forEach((p) => (md += `- ${p}\n`));
+
+    if (Array.isArray(data.advice)) {
+      data.advice.forEach((p) => (md += `- ${p}\n`));
+    }
 
     return md;
   };
 
-  // 🔥 SSE Streaming Function
   const streamAI = async (url) => {
     setDetails("");
     setIsLoading(true);
@@ -50,10 +57,7 @@ function CompatibilityCalc() {
 
     try {
       const response = await fetch(url);
-
-      if (!response.body) {
-        throw new Error("ReadableStream not supported");
-      }
+      if (!response.body) throw new Error("Stream not supported");
 
       const reader = response.body.getReader();
       const decoder = new TextDecoder("utf-8");
@@ -65,32 +69,19 @@ function CompatibilityCalc() {
         buffer += decoder.decode(value, { stream: true });
       }
 
-      let clean = buffer
+      const clean = buffer
         .split("\n")
         .map((line) => line.replace(/^data:\s*/, ""))
         .join("")
         .trim();
 
-      const jsonStart = clean.indexOf("{");
-      const jsonEnd = clean.lastIndexOf("}");
-
-      if (jsonStart === -1 || jsonEnd === -1) {
-        throw new Error("No valid JSON found in response");
-      }
-
-      const jsonString = clean.substring(jsonStart, jsonEnd + 1);
-
-      const json = JSON.parse(jsonString);
+      const json = JSON.parse(clean);
 
       const markdown = jsonToMarkdown(json);
 
       setDetails(markdown);
     } catch (err) {
       console.error("Streaming error:", err);
-
-      setDetails(
-        "⚠️ Unable to load compatibility analysis at the moment. Please try again."
-      );
     } finally {
       setIsLoading(false);
     }
@@ -98,8 +89,6 @@ function CompatibilityCalc() {
 
   const handleCalculate = () => {
     if (!name1 || !dob1 || !name2 || !dob2) return;
-
-    setDetails("");
 
     const url = `${API_BASE}/api/compatibility-stream?name1=${encodeURIComponent(
       name1
@@ -113,70 +102,78 @@ function CompatibilityCalc() {
   };
 
   return (
-    <div className="Compatibility-container">
-      {/* LEFT SIDE - CALCULATOR */}
-      <div className="calc compatibility">
-        <div className="compatibility-card-ui">
-          <h2>
-            Compatibility <br /> Calculator
-          </h2>
+    <div className="Mulank-container">
+      <div className="calc">
+        <div className="calculator-container">
+          <h1>Compatibility Calculator</h1>
 
-          <label>Person 1 Full Name</label>
-          <input
-            type="text"
-            placeholder="Enter Person 1 Full Name"
-            value={name1}
-            onChange={(e) => setName1(e.target.value)}
-          />
+          <div className="input-group">
+            <label>Person 1 Name</label>
+            <input
+              type="text"
+              className="date-input"
+              value={name1}
+              onChange={(e) => setName1(e.target.value)}
+            />
+          </div>
 
-          <label>Person 1 Date of Birth</label>
-          <input
-            type="date"
-            value={dob1}
-            onChange={(e) => setDob1(e.target.value)}
-          />
+          <div className="input-group">
+            <label>Person 1 Date of Birth</label>
+            <input
+              type="date"
+              className="date-input"
+              value={dob1}
+              max={today}
+              onChange={(e) => setDob1(e.target.value)}
+            />
+          </div>
 
-          <label>Person 2 Full Name</label>
-          <input
-            type="text"
-            placeholder="Enter Person 2 Full Name"
-            value={name2}
-            onChange={(e) => setName2(e.target.value)}
-          />
+          <div className="input-group">
+            <label>Person 2 Name</label>
+            <input
+              type="text"
+              className="date-input"
+              value={name2}
+              onChange={(e) => setName2(e.target.value)}
+            />
+          </div>
 
-          <label>Person 2 Date of Birth</label>
-          <input
-            type="date"
-            value={dob2}
-            onChange={(e) => setDob2(e.target.value)}
-          />
+          <div className="input-group">
+            <label>Person 2 Date of Birth</label>
+            <input
+              type="date"
+              className="date-input"
+              value={dob2}
+              max={today}
+              onChange={(e) => setDob2(e.target.value)}
+            />
+          </div>
 
-          <label>Relationship Type</label>
-          <select
-            value={relationshipType}
-            onChange={(e) => setRelationshipType(e.target.value)}
-          >
-            <option value="Love">Love</option>
-            <option value="Marriage">Marriage</option>
-            <option value="Business">Business</option>
-            <option value="Friendship">Friendship</option>
-          </select>
+          <div className="input-group">
+            <label>Relationship Type</label>
+            <select
+              className="date-input"
+              value={relationshipType}
+              onChange={(e) => setRelationshipType(e.target.value)}
+            >
+              <option>Love</option>
+              <option>Marriage</option>
+              <option>Friendship</option>
+              <option>Business</option>
+            </select>
+          </div>
 
           <button
             className="calculate-btn"
             onClick={handleCalculate}
-            disabled={!name1 || !dob1 || !name2 || !dob2 || isLoading}
+            disabled={isLoading}
           >
             {isLoading ? "Analyzing..." : "Check Compatibility"}
           </button>
-
-          <p className="result-title">Compatibility Result</p>
-          <div className="result-box">{details ? "Ready" : "--"}</div>
         </div>
       </div>
 
-      {/* RIGHT SIDE - OUTPUT BOX */}
-      <div className="compatibility-output-ui">
+      <div className="lp-explain-ai">
         {isLoading && (
           <div className="ai-loader">
             <div className="ai-ring"></div>
@@ -185,11 +182,13 @@ function CompatibilityCalc() {
               <span></span>
               <span></span>
             </div>
-            <p>Analyzing your relationship energy...</p>
+            <p>Analyzing relationship compatibility...</p>
           </div>
         )}
 
-        {!isLoading && details && <MarkdownRenderer content={details} />}
+        {!isLoading && details && (
+          <MarkdownRenderer content={details} />
+        )}
       </div>
     </div>
   );
