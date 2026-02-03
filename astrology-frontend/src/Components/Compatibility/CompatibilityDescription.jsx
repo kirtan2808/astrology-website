@@ -5,7 +5,7 @@ const CompatibilityDescription = () => {
      return (
           <div className="description compatibility">
                <div className="life-img">
-                    <img src="src/images/compatibility_num.jfif" alt="Compatibility Numerology" />
+                    <img src="src/images/compatibility_num.jpeg" alt="Compatibility Numerology" />
                </div>
 
                <div className="question">

@@ -1,180 +1,201 @@
-/* ================= MAIN CONTAINER ================= */
+/* ================= ROOT CONTAINER ================= */
 .Remedies-container {
-     display: flex;
-     justify-content: space-around;
-     align-items: center;
-     min-height: 100vh;
-     padding: 60px 40px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  min-height: 100vh;
+  padding: 70px 40px;
 
-     background: linear-gradient(360deg,
-               #1b1028 0%,
-               #0b1f3a 40%,
-               #020b1f 100%);
+  background: linear-gradient(
+    360deg,
+    #1b1028 0%,
+    #0b1f3a 40%,
+    #020b1f 100%
+  );
 }
 
-/* ================= CALCULATOR ================= */
+/* ================= LEFT SIDE ================= */
 .calc.remedies {
-     flex: 1;
-     display: flex;
-     justify-content: center;
+  flex: 1;
+  display: flex;
+  justify-content: center;
 }
 
-/* ================= LEFT UI CARD ================= */
+/* ================= CARD UI ================= */
 .remedies-card-ui {
-     width: 420px;
-     min-height: 620px;
-     padding: 40px 35px;
-     border-radius: 22px;
+  width: 440px;
+  padding: 42px 36px;
+  border-radius: 26px;
 
-     background: rgba(255, 255, 255, 0.04);
-     border: 1px solid rgba(230, 199, 123, 0.35);
+  background: linear-gradient(
+    180deg,
+    rgba(20, 30, 60, 0.85),
+    rgba(10, 20, 45, 0.95)
+  );
 
-     color: #eaeaea;
-     text-align: center;
+  border: 1.5px solid rgba(230, 199, 123, 0.45);
+  backdrop-filter: blur(14px);
+
+  color: #f1f5f9;
+  text-align: center;
 }
 
+/* ================= HEADING ================= */
 .remedies-card-ui h2 {
-     font-size: 34px;
-     color: #e6c77b;
-     margin-bottom: 22px;
-     font-family: "Playfair Display", serif;
+  font-size: 36px;
+  margin-bottom: 28px;
+
+  font-family: "Playfair Display", serif;
+  font-weight: 600;
+  letter-spacing: 0.6px;
+
+  color: #f5d57a;
 }
 
+/* ================= LABELS ================= */
 .remedies-card-ui label {
-     display: block;
-     text-align: left;
-     font-size: 14px;
-     color: #cbd5e1;
-     margin-bottom: 10px;
-     margin-top: 10px;
+  display: block;
+  text-align: left;
+
+  font-size: 14px;
+  color: #e6c77b;
+
+  margin-bottom: 8px;
+  margin-top: 14px;
 }
 
+/* ================= INPUTS & SELECT ================= */
 .remedies-card-ui input,
 .remedies-card-ui select {
-     width: 100%;
-     height: 46px;
-     border-radius: 12px;
-     padding: 0 14px;
+  width: 100%;
+  height: 52px;
 
-     border: 1px solid rgba(255, 255, 255, 0.25);
-     background: rgba(255, 255, 255, 0.06);
+  padding: 0 16px;
+  border-radius: 14px;
 
-     color: #fff;
-     outline: none;
-     margin-bottom: 10px;
+  font-size: 15px;
+  color: #f9fafb;
+
+  background: linear-gradient(
+    180deg,
+    rgba(20, 30, 60, 0.85),
+    rgba(10, 20, 45, 0.95)
+  );
+
+  border: 1.5px solid rgba(230, 199, 123, 0.4);
+  outline: none;
+
+  transition: all 0.25s ease;
 }
 
-/* ✅ FIX: Dropdown options visible */
+/* Focus glow */
+.remedies-card-ui input:focus,
+.remedies-card-ui select:focus {
+  border-color: #f5d57a;
+  box-shadow: 0 0 0 2px rgba(245, 213, 122, 0.25);
+}
+
+/* ================= SELECT FIX ================= */
 .remedies-card-ui select {
-     cursor: pointer;
-     appearance: none;
+  cursor: pointer;
+  appearance: none;
+
+  background-image:
+    linear-gradient(
+      180deg,
+      rgba(20, 30, 60, 0.85),
+      rgba(10, 20, 45, 0.95)
+    ),
+    url("data:image/svg+xml,%3Csvg fill='gold' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 18px;
 }
 
 .remedies-card-ui select option {
-     background: #0b1f3a;
-     /* dark background */
-     color: #ffffff;
-     /* white text */
+  background: #020b1f;
+  color: #ffffff;
 }
 
-/* optional: selected option styling */
-.remedies-card-ui select option:checked {
-     background: #071a3d;
-     color: #e6c77b;
-}
-
+/* ================= BUTTON ================= */
 .remedies-card-ui button {
-     width: 100%;
-     padding: 14px;
-     border: none;
-     border-radius: 14px;
+  width: 100%;
+  margin-top: 22px;
+  padding: 15px;
 
-     background: #e6c77b;
-     color: #1a1a1a;
-     font-weight: 600;
-     cursor: pointer;
+  border: none;
+  border-radius: 999px;
 
-     transition: 0.3s ease;
-     margin-top: 12px;
+  background: linear-gradient(
+    180deg,
+    #f5d57a,
+    #e6c77b
+  );
+
+  color: #1a1a1a;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 .remedies-card-ui button:hover {
-     transform: translateY(-2px);
-     filter: brightness(1.05);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(230, 199, 123, 0.35);
 }
 
-.result-title {
-     margin-top: 22px;
-     color: #cbd5e1;
-     font-size: 14px;
-}
-
-.result-box {
-     margin-top: 14px;
-     font-size: 28px;
-     font-weight: 700;
-     color: #e6c77b;
-}
-
-/* ================= RIGHT OUTPUT BOX ================= */
+/* ================= RIGHT OUTPUT ================= */
 .remedies-output-ui {
-     flex: 1;
-     max-width: 900px;
-     min-height: 620px;
-     padding: 40px;
+  flex: 1;
+  max-width: 900px;
+  min-height: 620px;
+  padding: 42px;
 
-     color: goldenrod;
-     line-height: 2;
+  background: rgba(24, 38, 71, 0.75);
+  backdrop-filter: blur(14px);
 
-     background: rgba(24, 38, 71, 0.75);
-     backdrop-filter: blur(12px);
+  border: 2px solid goldenrod;
+  border-radius: 22px;
 
-     border: 2px solid goldenrod;
-     border-radius: 20px;
+  color: #e6c77b;
+  line-height: 2;
 }
 
-.remedies-output-ui h3 {
-     margin-bottom: 20px;
-     font-size: 18px;
-     font-weight: 600;
-     color: #e6c77b;
-     border-left: 4px solid #e6c77b;
-     padding-left: 12px;
-     letter-spacing: 0.5px;
-}
-
+/* Text */
 .remedies-output-ui p {
-     margin-bottom: 10px;
-     color: #d1d5db;
+  color: #d1d5db;
+  margin-bottom: 12px;
 }
 
 .remedies-output-ui strong {
-     color: #f9fafb;
-     font-weight: 600;
+  color: #f9fafb;
 }
 
 /* ================= MOBILE ================= */
 @media (max-width: 768px) {
-     .Remedies-container {
-          flex-direction: column;
-          padding: 70px 16px;
-          gap: 24px;
-     }
+  .Mulank-container {
+    flex-direction: column;
+    padding: 70px 16px;
+    gap: 26px;
+  }
 
-     .calc.remedies {
-          width: 100%;
-     }
+  .remedies-card-ui {
+    width: 100%;
+    padding: 30px 20px;
+  }
 
-     .remedies-card-ui {
-          width: 100%;
-          padding: 28px 18px;
-     }
+  .remedies-card-ui h2 {
+    font-size: 30px;
+  }
 
-     .remedies-output-ui {
-          width: 100%;
-          padding: 22px 18px;
-          font-size: 14px;
-          line-height: 1.8;
-          border-radius: 16px;
-     }
+  .remedies-output-ui {
+    width: 100%;
+    padding: 22px 18px;
+    font-size: 14px;
+    line-height: 1.8;
+    border-radius: 16px;
+  }
 }

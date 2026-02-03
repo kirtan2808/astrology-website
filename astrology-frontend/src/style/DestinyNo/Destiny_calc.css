@@ -19,6 +19,9 @@
   justify-content: center;
 }
 
+.result-label{
+  color: white;
+}
 /* ================= CONCLUSION ================= */
 /* ================= AI CONTENT – DARK NAVY THEME ================= */
 .destiny-explain-ai {

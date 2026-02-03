@@ -4,7 +4,7 @@ const ExpressionDescription = () => {
      return (
           <div className="description expression">
                <div className="life-img">
-                    <img src="src/images/expression.jpg" alt="Expression Number" />
+                    <img src="src/images/expression.jpeg" alt="Expression Number" />
                </div>
 
                <div className="question">

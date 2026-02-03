@@ -5,7 +5,7 @@ const PersonalityDescription = () => {
      return (
           <div className="description personality">
                <div className="life-img">
-                    <img src="src/images/personality_des.webp" alt="Personality Number" />
+                    <img src="src/images/personality_des.jpeg" alt="Personality Number" />
                </div>
 
                <div className="question">

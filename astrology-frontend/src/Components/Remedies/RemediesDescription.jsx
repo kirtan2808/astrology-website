@@ -5,7 +5,7 @@ const RemediesDescription = () => {
      return (
           <div className="description remedies">
                <div className="life-img">
-                    <img src="src/images/remedius_num.jpg" alt="Remedies & Guidance" />
+                    <img src="src/images/remedius_num.jpeg" alt="Remedies & Guidance" />
                </div>
 
                <div className="question">

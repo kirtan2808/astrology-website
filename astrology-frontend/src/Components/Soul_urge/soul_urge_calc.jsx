@@ -2,6 +2,7 @@ import { useState } from "react";
 import MarkdownRenderer from "../MarkdownRenderer";
 import "../../style/Soul_urge/Soul_urge_calc.css";
 import { API_BASE } from "../../utils/streamAI";
+import LanguageSelect from "../LanguageSelect";
 
 function SoulUrge_calc() {
   const [name, setName] = useState("");
@@ -9,7 +10,8 @@ function SoulUrge_calc() {
   const [meaning, setMeaning] = useState("");
   const [details, setDetails] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-
+  const [language, setLanguage] = useState("en"); // default English
+  
   const vowelValues = { A: 1, E: 5, I: 9, O: 6, U: 3 };
 
   const reduce = (num) => {
@@ -153,6 +155,10 @@ function SoulUrge_calc() {
             />
           </div>
 
+<LanguageSelect
+  language={language}
+  setLanguage={setLanguage}
+/>
           <button
             className="soulurge-calc-btn"
             onClick={calculateSoulUrge}

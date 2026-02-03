@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "../../style/Remedies/RemediesCalc.css";
 import { API_BASE } from "../../utils/streamAI";
+import LanguageSelect from "../LanguageSelect";
 
 const RemediesCalc = () => {
   const [fullName, setFullName] = useState("");
@@ -9,6 +10,7 @@ const RemediesCalc = () => {
 
   const [output, setOutput] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [language, setLanguage] = useState("en"); // default English
 
   // Restrict calendar to today
   const today = new Date().toISOString().split("T")[0];
@@ -101,6 +103,10 @@ const RemediesCalc = () => {
             <option value="Education">Education</option>
           </select>
 
+          <LanguageSelect
+            language={language}
+            setLanguage={setLanguage}
+          />
           <button
             onClick={handleCalculate}
             disabled={!fullName || !dob || isLoading}
@@ -112,7 +118,6 @@ const RemediesCalc = () => {
 
       {/* RIGHT SIDE - OUTPUT BOX */}
       <div className="remedies-output-ui">
-        <h3>Remedies & Guidance Output</h3>
 
         {isLoading && <p>Generating your personalized remedies...</p>}
 

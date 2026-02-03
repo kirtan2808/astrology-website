@@ -2,6 +2,8 @@ import { useState } from "react";
 import MarkdownRenderer from "../MarkdownRenderer";
 import "../../style/DestinyNo/destiny_calc.css";
 import { API_BASE } from "../../utils/streamAI";
+import LanguageSelect from "../LanguageSelect";
+
 
 function Destiny_calc() {
   const [name, setName] = useState("");
@@ -9,6 +11,7 @@ function Destiny_calc() {
   const [meaning, setMeaning] = useState("");
   const [details, setDetails] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [language, setLanguage] = useState("en"); // default English
 
   const letterValues = {
     A: 1, J: 1, S: 1,
@@ -162,6 +165,11 @@ function Destiny_calc() {
               onChange={e => setName(e.target.value)}
             />
           </div>
+
+          <LanguageSelect
+            language={language}
+            setLanguage={setLanguage}
+          />
 
           <button
             className="calculate-btn"
