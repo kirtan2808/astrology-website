@@ -11,10 +11,10 @@ import ExpressionNumber from "./pages/Expression";
 import PersonalityNumber from "./pages/Personality";
 import NameNumber from "./pages/Name";
 import Compatibility from "./pages/Compatibility";
-import Remedies from "./pages/Remedies";
+// import Remedies from "./pages/Remedies";
 import AboutUs from "./Components/About/AboutUs";
 import ContectUs from "./Components/Contect/ContectUs";
-import Services from "./Components/services_numerology/services";
+import Services from "./Components/services_numerology/services";  
 import CursorEffect from "./Components/cursoreffect";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
@@ -153,17 +153,17 @@ function App() {
         </>
       ),
     },
-    {
-      path: "/numerology-remedies",
-      element: (
-        <>
-          <ScrollToTop />
-          <Navbar />
-          <Remedies />
-          <Footer />
-        </>
-      ),
-    },
+    // {
+    //   path: "/numerology-remedies",
+    //   element: (
+    //     <>
+    //       <ScrollToTop />
+    //       <Navbar />
+    //       <Remedies />
+    //       <Footer />
+    //     </>
+    //   ),
+    // },
   ]);
 
   return (

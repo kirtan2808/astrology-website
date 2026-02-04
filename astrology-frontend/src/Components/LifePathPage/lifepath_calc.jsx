@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import MarkdownRenderer from "../MarkdownRenderer";
 import "../../style/LifePathPage/Lifepath_calc.css";
 import { API_BASE } from "../../utils/streamAI";
-import LanguageSelect from "../LanguageSelect";
 
 function Lifepath_calc() {
   const [birthDate, setBirthDate] = useState("");
@@ -10,7 +9,7 @@ function Lifepath_calc() {
   const [meaning, setMeaning] = useState("");
   const [details, setDetails] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [language, setLanguage] = useState("en"); // default English
+  // const [language, setLanguage] = useState("en"); // default English
 
   useEffect(() => {
     const d = new Date();
@@ -160,10 +159,10 @@ function Lifepath_calc() {
             />
           </div>
 
-          <LanguageSelect
+          {/* <LanguageSelect
             language={language}
             setLanguage={setLanguage}
-          />
+          /> */}
           <button
             className="calculate-btn"
             onClick={calculateLifePath}

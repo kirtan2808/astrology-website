@@ -2,7 +2,6 @@ import { useState } from "react";
 import MarkdownRenderer from "../MarkdownRenderer";
 import "../../style/Expression/expression_calc.css";
 import { API_BASE } from "../../utils/streamAI";
-import LanguageSelect from "../LanguageSelect";
 
 function Expression_calc() {
   const [name, setName] = useState("");
@@ -10,7 +9,7 @@ function Expression_calc() {
   const [meaning, setMeaning] = useState("");
   const [details, setDetails] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-    const [language, setLanguage] = useState("en"); // default English
+    // const [language, setLanguage] = useState("en"); // default English
 
   const letterValues = {
     A: 1, J: 1, S: 1,
@@ -165,10 +164,10 @@ function Expression_calc() {
             />
           </div>
 
-<LanguageSelect
+{/* <LanguageSelect
   language={language}
   setLanguage={setLanguage}
-/>
+/> */}
           <button
             className="calculate-btn"
             onClick={calculateExpression}

@@ -45,28 +45,28 @@ const Services = () => {
       desc: "Check relationship harmony using numerological alignment.",
       link: "/compatibility"
     },
-    {
-      icon: "∞",
-      title: "Remedies & Guidance",
-      desc: "Practical numerology-based remedies to restore balance in life.",
-      link: "/numerology-remedies"
-    }
+    // {
+    //   icon: "∞",
+    //   title: "Remedies & Guidance",
+    //   desc: "Practical numerology-based remedies to restore balance in life.",
+    //   link: "/numerology-remedies"
+    // }
   ];
 
-  const astrologyServices = [
-    {
-      icon: "♈",
-      title: "Astrology",
-      desc: "Understand planetary positions and how celestial energies influence your life.",
-      link: "/astrology"
-    },
-    {
-      icon: "☸",
-      title: "Kundli",
-      desc: "Detailed birth chart analysis to reveal destiny, timing, and life patterns.",
-      link: "/kundli"
-    }
-  ];
+  // const astrologyServices = [
+  //   {
+  //     icon: "♈",
+  //     title: "Astrology",
+  //     desc: "Understand planetary positions and how celasestial energies influence your life.",
+  //     link: "/astrology"
+  //   },
+  //   {
+  //     icon: "☸",
+  //     title: "Kundli",
+  //     desc: "Detailed birth chart analysis to reveal destiny, timing, and life patterns.",
+  //     link: "/kundli"
+  //   }
+  // ];
 
   return (
     <div className="services-page">
@@ -93,14 +93,14 @@ const Services = () => {
       </div>
 
       {/* ===== ASTROLOGY ===== */}
-      <div className="services-intro">
+      {/* <div className="services-intro">
         <h1>Astrology Services</h1>
         <p>
           Decode cosmic influences and understand how planetary movements shape your destiny.
         </p>
-      </div>
+      </div> */}
 
-      <div className="services-grid">
+      {/* <div className="services-grid">
         {astrologyServices.map((service, index) => (
           <Link to={service.link} className="service-link" key={index}>
             <div className="service-card">
@@ -110,7 +110,7 @@ const Services = () => {
             </div>
           </Link>
         ))}
-      </div>
+      </div> */}
 
       {/* ===== CTA ===== */}
       <div className="services-cta">

@@ -2,7 +2,6 @@ import { useState } from "react";
 import MarkdownRenderer from "../MarkdownRenderer";
 import "../../style/DestinyNo/destiny_calc.css";
 import { API_BASE } from "../../utils/streamAI";
-import LanguageSelect from "../LanguageSelect";
 
 function CompatibilityCalc() {
   const [name1, setName1] = useState("");
@@ -10,7 +9,7 @@ function CompatibilityCalc() {
   const [name2, setName2] = useState("");
   const [dob2, setDob2] = useState("");
   const [relationshipType, setRelationshipType] = useState("Love");
-  const [language, setLanguage] = useState("en"); // default English
+  // const [language, setLanguage] = useState("en"); // default English
 
   const [details, setDetails] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -165,10 +164,10 @@ function CompatibilityCalc() {
             </select>
           </div>
 
-          <LanguageSelect
+          {/* <LanguageSelect
             language={language}
             setLanguage={setLanguage}
-          />
+          /> */}
           <button
             className="calculate-btn"
             onClick={handleCalculate}

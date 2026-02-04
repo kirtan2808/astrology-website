@@ -2,7 +2,6 @@ import { useState } from "react";
 import MarkdownRenderer from "../MarkdownRenderer";
 import "../../style/Mulank/mulank_calc.css";
 import { API_BASE } from "../../utils/streamAI";
-import LanguageSelect from "../LanguageSelect";
 
 
 function Mulank_calc() {
@@ -11,7 +10,7 @@ function Mulank_calc() {
   const [meaning, setMeaning] = useState("");
   const [details, setDetails] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [language, setLanguage] = useState("en"); // default English
+  // const [language, setLanguage] = useState("en"); // default English
 
 
   const reduce = (num) => {
@@ -151,10 +150,10 @@ function Mulank_calc() {
             />
           </div>
 
-          <LanguageSelect
+          {/* <LanguageSelect
             language={language}
             setLanguage={setLanguage}
-          />
+          /> */}
 
           <button
             className="calculate-btn"
